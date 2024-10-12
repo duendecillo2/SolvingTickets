@@ -32,9 +32,13 @@ const TicketForm = () => {
         };
 
         try {
+            // Obtener el token de localStorage
+            const token = localStorage.getItem('token');
+
             const response = await axios.post('http://localhost:8000/api/tickets/', ticketData, {
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Token ${token}`, // Incluye el token en el encabezado
                 },
             });
             console.log('Ticket creado:', response.data);

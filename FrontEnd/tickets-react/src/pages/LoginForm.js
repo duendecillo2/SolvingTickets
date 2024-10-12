@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import '../styles/LoginForm.css'; 
+import { useNavigate, Link } from 'react-router-dom';
+import styles from '../styles/LoginRegisterForm.module.css'; 
 
 const LoginForm = () => {
     const [username, setUsername] = useState('');
@@ -17,7 +17,7 @@ const LoginForm = () => {
                 password,
             });
 
-            localStorage.setItem('token', response.data.access);
+            localStorage.setItem('token', response.data.token); // Asegúrate de que 'access' sea 'token'
             alert('Inicio de sesión exitoso');
             navigate('/dashboard');
         } catch (error) {
@@ -27,11 +27,12 @@ const LoginForm = () => {
     };
 
     return (
-        <div className="wrapper">
-            <div className="form-wrapper sign-in">
+     <div className={styles.container}> 
+        <div className={styles.wrapper}>
+            <div className={styles.formWrapper}>
                 <form onSubmit={handleSubmit}>
-                    <h2>Login</h2>
-                    <div className="input-group">
+                    <h2 className={styles.h2}>Login</h2>
+                    <div className={styles.inputGroup}>
                         <input
                             type="text"
                             value={username}
@@ -40,7 +41,7 @@ const LoginForm = () => {
                         />
                         <label>Username</label>
                     </div>
-                    <div className="input-group">
+                    <div className={styles.inputGroup}>
                         <input
                             type="password"
                             value={password}
@@ -49,20 +50,21 @@ const LoginForm = () => {
                         />
                         <label>Password</label>
                     </div>
-                    <div className="remember">
+                    <div className={styles.remember}>
                         <label>
                             <input type="checkbox" /> Remember me
                         </label>
                     </div>
-                    <button type="submit">Login</button>
-                    <div className="signUp-link">
+                    <button type="submit" className={styles.button}>Login</button>
+                    <div className={styles.signUpLink}>
                         <p>
-                            Don't have an account? <a href="/register" className="signUpBtn-link">Sign Up</a>
+                            Don't have an account? <Link to="/register" className={styles.signUpBtnLink}>Sign Up</Link>
                         </p>
                     </div>
                 </form>
             </div>
         </div>
+      </div>  
     );
 };
 
