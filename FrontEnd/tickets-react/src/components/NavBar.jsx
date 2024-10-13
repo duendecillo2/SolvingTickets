@@ -1,22 +1,29 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import '../styles/NavBar.css';
+import '../styles/NavBarHomePage.css';
+import logo from '../media/logo.png';
 
-const Navbar = ({ links }) => {
+const NavBar = ({ links }) => {
     return (
         <nav className="navbar">
-            <div className="navbar-container">
-                <h1 className="navbar-logo">SolvingTickets</h1>
-                <ul className="navbar-menu">
-                    {links.map((link, index) => (
-                        <li key={index}>
-                            <Link to={link.path} className="navbar-link">{link.label}</Link>
-                        </li>
-                    ))}
-                </ul>
+            <div className="logo-container">
+                <img 
+                    src={logo} 
+                    alt="Logo" 
+                    className="navbar-logo" 
+                    onClick={() => window.location.reload()} 
+                />
+                <span className="navbar-title">Solving Tickets</span>
             </div>
+            <ul>
+                {links.map((link) => (
+                    <li key={link.path}>
+                        <Link to={link.path}>{link.label}</Link>
+                    </li>
+                ))}
+            </ul>
         </nav>
     );
 };
 
-export default Navbar;
+export default NavBar;
