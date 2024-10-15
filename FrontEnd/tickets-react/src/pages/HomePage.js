@@ -1,6 +1,7 @@
 // src/pages/HomePage.js
 import React from 'react';
 import Navbar from '../components/NavBar';
+import '../styles/HomePage.css'
 
 const HomePage = () => {
     const links = [

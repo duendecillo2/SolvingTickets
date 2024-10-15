@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import '../styles/TicketList.css'; // Asegúrate de crear este archivo CSS
 
 const TicketList = () => {
     const [tickets, setTickets] = useState([]);
@@ -10,10 +11,9 @@ const TicketList = () => {
         const fetchTickets = async () => {
             try {
                 const token = localStorage.getItem('token');
-
                 const response = await axios.get('http://localhost:8000/api/tickets/', {
                     headers: {
-                        'Authorization': `Token ${token}`, // Incluye el token en el encabezado
+                        'Authorization': `Token ${token}`,
                     },
                 });
                 setTickets(response.data);
@@ -28,13 +28,13 @@ const TicketList = () => {
         fetchTickets();
     }, []);
 
-    if (loading) return <div>Cargando tickets...</div>;
-    if (error) return <div>{error}</div>;
+    if (loading) return <div className="loading">Cargando tickets...</div>;
+    if (error) return <div className="error">{error}</div>;
 
     return (
-        <div>
+        <div className="ticket-list">
             <h2>Lista de Tickets</h2>
-            <table>
+            <table className="ticket-table">
                 <thead>
                     <tr>
                         <th>Asunto</th>
@@ -50,7 +50,7 @@ const TicketList = () => {
                 </thead>
                 <tbody>
                     {tickets.map(ticket => (
-                        <tr key={ticket.id}>
+                        <tr key={ticket.id} className="ticket-row">
                             <td>{ticket.asunto}</td>
                             <td>{ticket.mensaje}</td>
                             <td>{ticket.estado}</td> 

@@ -1,0 +1,48 @@
+.card {
+    background: #1E1E1E; /* Gris oscuro para contrastar con el fondo negro */
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    max-width: 300px;
+    margin: 20px auto;
+    text-align: center;
+    color: #fff;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-bottom: 5px solid #7D3C98;
+}
+
+.card h2 {
+    color: #7D3C98; /* Morado para el título */
+    margin-bottom: 10px;
+}
+
+.card p {
+    font-size: 16px;
+    color: #bbb; /* Texto gris claro para la descripción */
+    margin-bottom: 20px;
+}
+
+.card-button {
+    background: #7D3C98; /* Morado para el botón */
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.card-button:hover {
+    background: #a569bd; /* Un morado más claro al pasar el ratón */
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px #a569bd;
+}
+
+.card-icon {
+    color: #7D3C98; 
+    font-size: 40px; 
+    margin-bottom: 10px;
+}    

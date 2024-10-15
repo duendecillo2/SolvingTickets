@@ -1,6 +1,9 @@
 body {
-    background-color: #eee9e9; /* Fondo negro para toda la aplicación */
-    color: #fff; /* Color del texto en blanco */
-    margin: 0; /* Asegúrate de que no haya márgenes */
-    padding-top: 80px; /* Espacio para el navbar */
+    font-family: 'Poppins', sans-serif;
+    background-image: url('./imagenes/pexels-photo-303383.jpeg');
+    background-repeat: no-repeat;
+    background-size: cover;  
+    background-position: center; 
+    background-attachment: fixed; /* Esto mantiene el fondo estático */
+    color: rgb(3, 3, 3); 
 }

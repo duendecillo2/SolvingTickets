@@ -1,0 +1,16 @@
+.card-container {
+    display: flex;
+    justify-content: space-around; 
+    flex-wrap: wrap; 
+    gap: 20px; 
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.dashboard-content {
+    margin-top: 80px; 
+    padding: 20px; 
+    color: rgb(255, 255, 255);  
+    margin-bottom: 40px;
+    text-align: center;
+}

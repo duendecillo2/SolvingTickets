@@ -15,6 +15,10 @@ class TicketViewSet(viewsets.ModelViewSet):
     serializer_class = TicketSerializer
     permission_classes = [IsAuthenticated]
 
+    def get_queryset(self):
+        # Filtra los tickets para que solo se muestren los del usuario autenticado
+        return Ticket.objects.filter(usuario=self.request.user)
+
     def perform_create(self, serializer):
         serializer.save(usuario=self.request.user)  
 
