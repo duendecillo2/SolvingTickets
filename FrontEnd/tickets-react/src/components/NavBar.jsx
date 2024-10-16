@@ -1,33 +1,29 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import '../styles/NavBar.css';
+import { Link } from 'react-router-dom';
+import '../styles/NavBarHomePage.css';
+import logo from '../media/logo.png';
 
-const Navbar = ({ links }) => {
-    const navigate = useNavigate();
-
-    const handleLogout = () => {
-        // Elimina el token del localStorage
-        localStorage.removeItem('token');
-        // Redirige al usuario a la página de inicio de sesión
-        navigate('/login');
-    };
-
+const NavBar = ({ links }) => {
     return (
         <nav className="navbar">
-            <h1 className="logo">SolvingTickets</h1>
-            <nav>
-                {links.map((link, index) => (
-                    link.label === 'Cerrar Sesión' ? (
-                        <span key={index} onClick={handleLogout} className="navbar-link">
-                            {link.label}
-                        </span>
-                    ) : (
-                        <Link key={index} to={link.path} className="navbar-link">{link.label}</Link>
-                    )
+            <div className="logo-container">
+                <img 
+                    src={logo} 
+                    alt="Logo" 
+                    className="navbar-logo" 
+                    onClick={() => window.location.reload()} 
+                />
+                <span className="navbar-title">Solving Tickets</span>
+            </div>
+            <ul>
+                {links.map((link) => (
+                    <li key={link.path}>
+                        <Link to={link.path}>{link.label}</Link>
+                    </li>
                 ))}
-            </nav>
+            </ul>
         </nav>
     );
 };
 
-export default Navbar;
+export default NavBar;

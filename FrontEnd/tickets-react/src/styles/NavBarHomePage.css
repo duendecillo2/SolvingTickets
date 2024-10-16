@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+.navbar {
+    display: flex;
+    justify-content: space-between; /* Distribuye el logo y los enlaces a cada extremo */
+    align-items: center; /* Centra verticalmente el contenido */
+    padding: 10px 20px; /* Espaciado interno en la navbar */
+    background-color: #000000; /* Color de fondo de la navbar */
+    position: absolute; /* Posición absoluta para mantenerlo en la parte superior */
+    top: 0; /* Se asegura que esté en la parte superior de la página */
+    width: 100%; /* Asegura que la navbar ocupe todo el ancho de la página */
+    z-index: 1000; /* Asegura que la navbar esté sobre otros elementos */
+}
+
+.logo-container {
+    display: flex;
+    align-items: center; /* Alinea el logo y el texto en el mismo nivel vertical */
+    cursor: pointer; /* Cambia el cursor al pasar sobre el logo */
+}
+
+.navbar-logo {
+    height: 80px; /* Ajusta la altura del logo en la navbar */
+    margin-left: 20px; /* Ajusta el margen izquierdo del logo */
+    margin-right: 15px; /* Añade espacio entre el logo y el texto */
+}
+
+.navbar-title {
+    font-size: 24px; /* Tamaño del texto */
+    font-weight: bold; /* Texto en negrita */
+    color: violet; /* Color del texto en violeta */
+}
+
+.navbar ul {
+    list-style: none; /* Elimina los puntos de la lista */
+    margin: 0;
+    padding: 0;
+    display: flex; /* Muestra los enlaces en línea */
+}
+
+.navbar li {
+    margin-left: 40px; /* Aumenta el espacio entre los enlaces */
+}
+
+.navbar a {
+    color: #9b59b6; /* Color de los enlaces en un violeta más oscuro */
+    text-decoration: none; /* Elimina subrayado */
+    padding: 10px; /* Espacio alrededor del texto */
+    margin-top: -10px; /* Ajusta el margen superior del texto */
+}
+
+.navbar a:hover {
+    text-decoration: underline; /* Subraya al pasar el mouse */
+}
