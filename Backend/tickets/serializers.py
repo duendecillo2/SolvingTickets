@@ -11,11 +11,15 @@ class TicketSerializer(serializers.ModelSerializer):
     usuario = serializers.StringRelatedField(read_only=True)
     agente = serializers.StringRelatedField(read_only=True)
     categoria = serializers.StringRelatedField()
+    prioridad_display = serializers.CharField(source='get_prioridad_display', read_only=True)
+    estado_display = serializers.CharField(source='get_estado_display', read_only=True)
 
 
     class Meta:
         model = Ticket
-        fields = '__all__'
+        fields = ['id', 'asunto', 'mensaje', 'estado', 'prioridad', 
+            'prioridad_display', 'estado_display', 'categoria',
+            'usuario', 'agente', 'fecha_creacion', 'fecha_actualizacion']
         read_only_fields = ['fecha_creacion', 'fecha_actualizacion', 'usuario', 'agente']
 
 class UserSerializer(serializers.ModelSerializer):
@@ -23,7 +27,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username', 'password', 'email')
+        fields = ('id','username', 'password', 'email', 'date_joined', 'first_name', 'last_name')
 
     def create(self, validated_data):
         user = User(
@@ -33,5 +37,8 @@ class UserSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])  # Hashea la contraseña
         user.save()
         return user
+
+     
+
 
         

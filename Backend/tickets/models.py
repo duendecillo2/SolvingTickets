@@ -13,13 +13,12 @@ class Ticket(models.Model):
         ('B', 'Baja'),
         ('M', 'Media'),
         ('A', 'Alta'),
-        ('C', 'Crítica'),
+        ('C', 'Critica'),
     ]
 
     ESTADO_CHOICES = [
         ('P', 'Pendiente'),
-        ('E', 'En progreso'),
-        ('R', 'Resuelto'),
+        ('R', 'Respondido'),
         ('C', 'Cerrado'),
     ]
 

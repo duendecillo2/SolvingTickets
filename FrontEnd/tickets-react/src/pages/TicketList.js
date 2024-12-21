@@ -38,28 +38,24 @@ const TicketList = () => {
                 <thead>
                     <tr>
                         <th>Asunto</th>
-                        <th>Mensaje</th>
-                        <th>Estado</th>
                         <th>Prioridad</th>
-                        <th>Fecha de Creación</th>
-                        <th>Fecha de Actualización</th>
-                        <th>Usuario</th>
-                        <th>Agente</th>
                         <th>Categoría</th>
+                        <th>Fecha Creación</th>
+                        <th>Fecha Actualización</th>
+                        <th>Estado</th>
+                        <th>Agente</th>
                     </tr>
                 </thead>
                 <tbody>
                     {tickets.map(ticket => (
                         <tr key={ticket.id} className="ticket-row">
                             <td>{ticket.asunto}</td>
-                            <td>{ticket.mensaje}</td>
-                            <td>{ticket.estado}</td> 
-                            <td>{ticket.prioridad}</td> 
-                            <td>{new Date(ticket.fecha_creacion).toLocaleString()}</td>
-                            <td>{new Date(ticket.fecha_actualizacion).toLocaleString()}</td>
-                            <td>{ticket.usuario}</td>
+                            <td><span className={`badge badge-${ticket.prioridad_display}`}>{ticket.prioridad_display}</span></td>
+                            <td>{ticket.categoria}</td>
+                            <td>{new Date(ticket.fecha_creacion).toLocaleDateString()}</td>
+                            <td>{new Date(ticket.fecha_actualizacion).toLocaleDateString()}</td>
+                            <td><span className={`badge badge-${ticket.estado_display}`}>{ticket.estado_display}</span></td>
                             <td>{ticket.agente || 'Sin asignar'}</td>
-                            <td>{ticket.categoria}</td> 
                         </tr>
                     ))}
                 </tbody>

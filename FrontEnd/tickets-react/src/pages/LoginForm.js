@@ -17,7 +17,7 @@ const LoginForm = () => {
                 password,
             });
 
-            localStorage.setItem('token', response.data.token); // Asegúrate de que 'access' sea 'token'
+            localStorage.setItem('token', response.data.token); 
             alert('Inicio de sesión exitoso');
             navigate('/dashboard');
         } catch (error) {
@@ -27,7 +27,7 @@ const LoginForm = () => {
     };
 
     return (
-     <div className={styles.container}> 
+    <div className={styles.container}> 
         <div className={styles.wrapper}>
             <div className={styles.formWrapper}>
                 <form onSubmit={handleSubmit}>

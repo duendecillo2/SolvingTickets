@@ -7,6 +7,7 @@ import TicketList from './pages/TicketList'
 import RegisterForm from './pages/RegisterForm'
 import HomePage from './pages/HomePage';
 import LoginForm from './pages/LoginForm'
+import Profile from './pages/Profile';
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
                 <Route path="/crear-ticket" element={<TicketForm/>} />
                 <Route path="/ver-tickets" element={<TicketList/>} />
                 <Route path="/login" element={<LoginForm />} />
+                <Route path="/profile" element={<Profile />} />
             </Routes>
     </BrowserRouter>
   );
