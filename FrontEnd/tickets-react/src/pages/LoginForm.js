@@ -17,9 +17,27 @@ const LoginForm = () => {
                 password,
             });
 
-            localStorage.setItem('token', response.data.token); 
+            const token = response.data.token;
+            localStorage.setItem('token', token); 
+
+            const profileResponse = await axios.get('http://localhost:8000/api/profile', {
+                headers: {
+                    'Authorization': `Token ${token}`,
+                },
+            });
+
+            const userRole = profileResponse.data[0].role;
+            console.log(userRole)
+            //Redirigir segun el rol
+
+            if (userRole === 'user') {
+                navigate('/dashboard');
+            } else {
+                navigate('/administracion');
+            }
+
             alert('Inicio de sesión exitoso');
-            navigate('/dashboard');
+            
         } catch (error) {
             console.error('Error en el inicio de sesión:', error);
             alert('Error en el inicio de sesión. Verifica tus credenciales.');
@@ -64,7 +82,7 @@ const LoginForm = () => {
                 </form>
             </div>
         </div>
-      </div>  
+    </div>  
     );
 };
 

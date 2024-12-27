@@ -16,6 +16,7 @@ const TicketList = () => {
                         'Authorization': `Token ${token}`,
                     },
                 });
+                console.log(response.data);
                 setTickets(response.data);
                 setLoading(false);
             } catch (err) {

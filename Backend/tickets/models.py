@@ -31,6 +31,29 @@ class Ticket(models.Model):
     agente = models.ForeignKey(User, on_delete=models.SET_NULL, null = True, blank = True, related_name = 'tickets_asignados') 
     fecha_creacion = models.DateTimeField(auto_now_add = True) 
     fecha_actualizacion = models.DateTimeField(auto_now = True)
+    respuesta = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.asunto} - {self.get_estado_display()}" #get_estado_display(): 
+
+        
+class UserProfile(models.Model):
+
+    ROLE_CHOICES = [
+        ('user', 'Usuario'),
+        ('agent', 'Agente'),
+    ]
+
+    # Relación uno a uno con el usuario
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
+
+    # Campo para almacenar la imagen de perfil
+    profile_image = models.ImageField(upload_to='profile_images/', null=True, blank=True)
+
+    # Otros campos opcionales que puedas necesitar (por ejemplo, biografía)
+    bio = models.TextField(null=True, blank=True)
+
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='user')
+    
+    def __str__(self):
+        return f"{self.user.username}'s Profile"

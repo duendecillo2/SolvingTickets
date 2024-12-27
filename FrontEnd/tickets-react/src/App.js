@@ -8,6 +8,7 @@ import RegisterForm from './pages/RegisterForm'
 import HomePage from './pages/HomePage';
 import LoginForm from './pages/LoginForm'
 import Profile from './pages/Profile';
+import Administracion from './pages/Administracion'
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
                 <Route path="/ver-tickets" element={<TicketList/>} />
                 <Route path="/login" element={<LoginForm />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/Administracion" element={<Administracion/>} />
             </Routes>
     </BrowserRouter>
   );

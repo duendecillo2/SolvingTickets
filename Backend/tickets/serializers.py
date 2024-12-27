@@ -1,11 +1,11 @@
 from rest_framework import serializers
-from .models import Categoria, Ticket
+from .models import Categoria, Ticket, UserProfile
 from django.contrib.auth.models import User
 
 class CategoriaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Categoria
-        fields = '__all__'
+        fields = ['id', 'nombre']
 
 class TicketSerializer(serializers.ModelSerializer):
     usuario = serializers.StringRelatedField(read_only=True)
@@ -36,9 +36,21 @@ class UserSerializer(serializers.ModelSerializer):
         )
         user.set_password(validated_data['password'])  # Hashea la contraseña
         user.save()
+        
         return user
 
-     
+class UserProfileSerializer(serializers.ModelSerializer):
+    role_display = serializers.CharField(source='get_role_display', read_only=True)
+
+    class Meta:
+        model = UserProfile
+        fields = ['id', 'user', 'profile_image', 'bio', 'role', 'role_display']
+
+    def update(self, instance, validated_data):
+        profile_image = validated_data.get('profile_image', None)
+        if profile_image:
+            instance.profile_image = profile_image
+        instance.save()
+        return instance
 
 
-        

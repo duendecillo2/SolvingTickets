@@ -32,7 +32,7 @@ const CreateTicketForm = () => {
         };
 
         try {
-            const token = localStorage.getItem('token'); // Asegúrate de que el token está en localStorage
+            const token = localStorage.getItem('token'); 
 
             if (!token) {
                 alert('No hay un token de autenticación válido. Por favor, inicie sesión.');
