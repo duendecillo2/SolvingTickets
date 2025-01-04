@@ -45,6 +45,7 @@ const TicketList = () => {
                         <th>Fecha Actualización</th>
                         <th>Estado</th>
                         <th>Agente</th>
+                        <th>Respuesta</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -57,6 +58,7 @@ const TicketList = () => {
                             <td>{new Date(ticket.fecha_actualizacion).toLocaleDateString()}</td>
                             <td><span className={`badge badge-${ticket.estado_display}`}>{ticket.estado_display}</span></td>
                             <td>{ticket.agente || 'Sin asignar'}</td>
+                            <td>{ticket.respuesta}</td>
                         </tr>
                     ))}
                 </tbody>

@@ -9,7 +9,7 @@ import HomePage from './pages/HomePage';
 import LoginForm from './pages/LoginForm'
 import Profile from './pages/Profile';
 import Administracion from './pages/Administracion'
-
+import RespuestaForm from './pages/RespuestaForm';
 
 function App() {
   return (
@@ -22,7 +22,8 @@ function App() {
                 <Route path="/ver-tickets" element={<TicketList/>} />
                 <Route path="/login" element={<LoginForm />} />
                 <Route path="/profile" element={<Profile />} />
-                <Route path="/Administracion" element={<Administracion/>} />
+                <Route path="/administration" element={<Administracion/>} />
+                <Route path="/answer-ticket" element={<RespuestaForm/>} />
             </Routes>
     </BrowserRouter>
   );
