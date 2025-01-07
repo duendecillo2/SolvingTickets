@@ -9,6 +9,7 @@ import HomePage from './pages/HomePage';
 import LoginForm from './pages/LoginForm'
 import Profile from './pages/Profile';
 import Administracion from './pages/Administracion'
+import AdminStats from './pages/Estadisticas'
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
                 <Route path="/login" element={<LoginForm />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/Administracion" element={<Administracion/>} />
+                <Route path="/Estadisticas" element={<AdminStats/>} />
             </Routes>
     </BrowserRouter>
   );

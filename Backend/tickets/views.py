@@ -17,6 +17,7 @@ from rest_framework import status
 from django.core.files.storage import FileSystemStorage
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import MultiPartParser, FormParser
+from django.db.models import Count
 
 class TicketViewSet(viewsets.ModelViewSet):
     queryset = Ticket.objects.all()
@@ -47,7 +48,7 @@ class TicketViewSet(viewsets.ModelViewSet):
 
         #Devuelve todos los tickets si es un agente
         if self.request.user.profile.role == 'agent':
-            return Ticket.objects.all()
+            return Ticket.objects.filter(agente=self.request.user)
 
         # Filtra los tickets para que solo se muestren los del usuario autenticado
         return Ticket.objects.filter(usuario=self.request.user)
@@ -127,3 +128,40 @@ class UserProfileViewSet(viewsets.ModelViewSet):
             'imageUrl': profile.profile_image.url if profile.profile_image else None
         })
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def ticket_stats(request):
+    # Filtrar los tickets asignados al agente actual
+    print("Obteniendo estadísticas de tickets...")
+    current_user = request.user
+    assigned_tickets = Ticket.objects.filter(agente=current_user)
+
+    total_tickets = assigned_tickets.count()
+
+    # Contar tickets por estado
+    tickets_by_state = assigned_tickets.values('estado').annotate(count=Count('estado'))
+    estado_display_map = dict(Ticket.ESTADO_CHOICES)  # Mapea los valores de estado a sus nombres legibles
+    state_stats = {estado_display_map.get(item['estado'], item['estado']): item['count'] for item in tickets_by_state}
+
+    # Contar tickets por prioridad
+    tickets_by_priority = assigned_tickets.values('prioridad').annotate(count=Count('prioridad'))
+    priority_display_map = dict(Ticket.PRIORIDAD_CHOICES)  # Mapea los valores de prioridad
+    priority_stats = {priority_display_map.get(item['prioridad'], item['prioridad']): item['count'] for item in tickets_by_priority}
+
+    # Contar tickets por categoría
+    tickets_by_category = assigned_tickets.values('categoria__nombre').annotate(count=Count('categoria'))
+    category_stats = {item['categoria__nombre']: item['count'] for item in tickets_by_category}
+
+    # Porcentaje de tickets cerrados
+    closed_tickets = assigned_tickets.filter(estado='C').count()
+    closed_percentage = (closed_tickets / total_tickets * 100) if total_tickets > 0 else 0
+
+    # Preparar datos para la respuesta
+    data = {
+        'total': total_tickets,
+        'by_state': state_stats,
+        'by_priority': priority_stats,
+        'by_category': category_stats,
+        'closed_percentage': closed_percentage,
+    }
+    return Response(data)
