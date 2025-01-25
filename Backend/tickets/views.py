@@ -1,5 +1,5 @@
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from .models import Ticket, Categoria, UserProfile
 from .serializers import TicketSerializer, CategoriaSerializer, UserSerializer
 from rest_framework.response import Response
@@ -11,13 +11,11 @@ from rest_framework.authtoken.models import Token
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_200_OK
 from .models import UserProfile
 from .serializers import UserProfileSerializer
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from rest_framework import status
-from django.core.files.storage import FileSystemStorage
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import MultiPartParser, FormParser
 from django.db.models import Count
+from django.contrib.auth.models import User as DjangoUser
+from django.http import JsonResponse
+from rest_framework.views import APIView
 
 class TicketViewSet(viewsets.ModelViewSet):
     queryset = Ticket.objects.all()
@@ -63,16 +61,15 @@ class CategoriaViewSet(viewsets.ModelViewSet):
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated, IsAdminUser]  # Asegúrate de que el usuario tenga permisos de administrador
 
     def perform_create(self, serializer):
         user = serializer.save()
         UserProfile.objects.create(user=user)
 
     def get_queryset(self):
-
-            
         # Filtra los usuarios para que solo se muestren los del usuario autenticado
-        return User.objects.filter(id=self.request.user.id)    
+        return User.objects.filter(id=self.request.user.id)
 
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -81,18 +78,42 @@ class UserViewSet(viewsets.ModelViewSet):
             instance.set_password(request.data['password'])
         instance.save()
         return Response(UserSerializer(instance).data)
-        
+
+    @action(detail=True, methods=['get'])
+    def retrieve_user(self, request, pk=None):
+        user = get_object_or_404(User, pk=pk)
+        profile = UserProfile.objects.get(user=user)
+        data = {
+            "id": user.id,
+            "username": user.username,
+            "email": user.email,
+            "is_active": user.is_active,
+            "profile__role": profile.role,
+        }
+        return Response(data)
+
+    @action(detail=True, methods=['put'])
+    def update_user(self, request, pk=None):
+        user = get_object_or_404(User, pk=pk)
+        user.username = request.data.get('username', user.username)
+        user.email = request.data.get('email', user.email)
+        user.is_active = request.data.get('is_active', user.is_active)
+        user.save()
+        return Response({"message": "User updated successfully"})
+
+    @action(detail=True, methods=['delete'])
+    def delete_user(self, request, pk=None):
+        user = get_object_or_404(User, pk=pk)
+        user.delete()
+        return Response({"message": "User deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+
 @api_view(['POST'])
 def login(request):
-
     user = get_object_or_404(User, username=request.data['username'])
-
     if not user.check_password(request.data['password']):
-        return Response({"error" : "Invalid password"}, status=HTTP_400_BAD_REQUEST)
-
+        return Response({"error": "Invalid password"}, status=status.HTTP_400_BAD_REQUEST)
     token, created = Token.objects.get_or_create(user=user)
     serializer = UserSerializer(instance=user)
-
     return Response({"token": token.key, "user":serializer.data}, status=HTTP_200_OK)
 
 @api_view(['GET'])
@@ -165,3 +186,30 @@ def ticket_stats(request):
         'closed_percentage': closed_percentage,
     }
     return Response(data)
+
+def get_users(request):
+    users = User.objects.all().select_related('profile').values(
+        'id', 'username', 'email', 'is_active', 'profile__role'
+    )
+    user_list = list(users)
+    return JsonResponse(user_list, safe=False)
+
+def get_user(request, pk):
+    user = User.objects.filter(pk=pk).select_related('profile').values(
+        'id', 'username', 'email', 'is_active', 'profile__role'
+    )
+    return JsonResponse(list(user), safe=False)
+
+class UserDeleteView(APIView):
+    permission_classes = [IsAuthenticated]  # Esto garantiza que solo los usuarios autenticados puedan eliminar.
+    
+    def delete(self, request, user_id):
+        # Lógica para eliminar el usuario
+        user = get_object_or_404(User, id=user_id)
+        if request.user != user and not request.user.is_staff:
+            return Response({"detail": "You do not have permission to perform this action."}, status=status.HTTP_403_FORBIDDEN)
+        
+        user.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+#python manage.py runserver --settings=tickets.settings

@@ -3,14 +3,15 @@ import React from 'react';
 import { BrowserRouter , Route, Routes } from 'react-router-dom';
 import Dashboard from './pages/Dashboard'; 
 import TicketForm from './pages/TicketForm'
-import TicketList from './pages/TicketList'
+import TicketList from './components/adminComponents/TicketList'
 import RegisterForm from './pages/RegisterForm'
 import HomePage from './pages/HomePage';
 import LoginForm from './pages/LoginForm'
 import Profile from './pages/Profile';
-import Administracion from './pages/Administracion'
-import AdminStats from './pages/Estadisticas'
-
+import Administracion from './components/adminComponents/Administracion.js'
+import AdminStats from './components/adminComponents/Statistics'
+import AdminPage from './pages/AdminPage'
+import UserManagement from './components/adminComponents/UserManagement.js';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/Administracion" element={<Administracion/>} />
                 <Route path="/Estadisticas" element={<AdminStats/>} />
+                <Route path="/admin" element={<AdminPage />} />
             </Routes>
     </BrowserRouter>
   );

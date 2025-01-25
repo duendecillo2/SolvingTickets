@@ -1,0 +1,99 @@
+.user-list-container {
+    padding: 20px;
+    background-color: #1e1e1e; /* Fondo oscuro */
+    color: #fff; /* Texto blanco */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    margin-top: 30px;
+  }
+  
+  .user-list-container h1 {
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 2rem;
+    color: #7D3C98; /* Morado principal */
+  }
+  
+  .user-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .user-table th, .user-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #444;
+  }
+  
+  .user-table th {
+    background-color: #7D3C98; /* Morado principal */
+    color: #fff;
+  }
+  
+  .user-table td {
+    background-color: #1e1e1e;
+  }
+  
+  .user-table tr:hover {
+    background-color: #2c2c2c;
+  }
+  
+  .user-table tr:nth-child(even) {
+    background-color: #242424;
+  }
+  
+  .user-actions {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .user-actions button {
+    background-color: #7D3C98;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .user-actions button:hover {
+    background-color: #6a2d81;
+  }
+  actions {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .user-actions button {
+    background-color: #7D3C98;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .user-actions button:hover {
+    background-color: #6a2d81;
+  }
+
+  .btn {
+    padding: 5px 10px;
+    margin: 0 5px;
+    cursor: pointer;
+  }
+  
+  .btn-edit {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .btn-delete {
+    background-color: #f44336;
+    color: white;
+  }
+  
+  .btn-toggle {
+    background-color: #008CBA;
+    color: white;
+  }
