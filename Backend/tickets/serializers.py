@@ -19,7 +19,7 @@ class TicketSerializer(serializers.ModelSerializer):
         model = Ticket
         fields = ['id', 'asunto', 'mensaje', 'estado', 'prioridad', 
             'prioridad_display', 'estado_display', 'categoria',
-            'usuario', 'agente', 'fecha_creacion', 'fecha_actualizacion']
+            'usuario', 'agente', 'fecha_creacion', 'fecha_actualizacion', 'respuesta']
         read_only_fields = ['fecha_creacion', 'fecha_actualizacion', 'usuario', 'agente']
 
 class UserSerializer(serializers.ModelSerializer):
