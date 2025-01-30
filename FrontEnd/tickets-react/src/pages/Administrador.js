@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'; // Importa React y los hooks
 import axios from 'axios'; // Importa axios para hacer solicitudes HTTP.
 import '../styles/Administrador.css'; // Importa el archivo CSS para los estilos de esta vista.
 
-const Administracion = () => { // Define un componente funcional llamado TicketList.
+const Administrador = () => { // Define un componente funcional llamado TicketList.
     const [tickets, setTickets] = useState([]); // Declara un estado llamado tickets y una función setTickets para actualizarlo. Inicialmente es un array vacío.
     const [loading, setLoading] = useState(true); // Declara un estado llamado loading y una función setLoading para actualizarlo. Inicialmente es true.
     const [error, setError] = useState(''); // Declara un estado llamado error y una función setError para actualizarlo. Inicialmente es una cadena vacía.
@@ -67,7 +67,8 @@ const Administracion = () => { // Define un componente funcional llamado TicketL
                                 </button>
                                 <button className="btn btn-danger">
                                     <i className="fas fa-times"></i>
-                                </button></td>
+                                </button>
+                            </td>
                         </tr>
                     ))}
                 </tbody>
@@ -77,4 +78,4 @@ const Administracion = () => { // Define un componente funcional llamado TicketL
 
 }
 
-export default Administracion; // Exporta el componente Administracion para que pueda ser usado en otras partes de la aplicación.
+export default Administrador; // Exporta el componente Administracion para que pueda ser usado en otras partes de la aplicación.

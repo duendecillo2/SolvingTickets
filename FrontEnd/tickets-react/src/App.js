@@ -9,12 +9,12 @@ import HomePage from './pages/HomePage';
 import LoginForm from './pages/LoginForm'
 import Profile from './pages/Profile';
 import Administracion from './pages/Administracion'
-<<<<<<< HEAD
+import Administrador from './pages/Administrador'
 import RespuestaForm from './pages/RespuestaForm';
-=======
+
 import AdminStats from './pages/Estadisticas'
 
->>>>>>> 45fc4ac91094739b38f13babf7cf6d3232d66319
+
 
 function App() {
   return (
@@ -27,13 +27,13 @@ function App() {
                 <Route path="/ver-tickets" element={<TicketList/>} />
                 <Route path="/login" element={<LoginForm />} />
                 <Route path="/profile" element={<Profile />} />
-<<<<<<< HEAD
-                <Route path="/administration" element={<Administracion/>} />
+
+                <Route path="/administration" element={<Administrador/>} />
                 <Route path="/answer-ticket" element={<RespuestaForm/>} />
-=======
+
                 <Route path="/Administracion" element={<Administracion/>} />
                 <Route path="/Estadisticas" element={<AdminStats/>} />
->>>>>>> 45fc4ac91094739b38f13babf7cf6d3232d66319
+
             </Routes>
     </BrowserRouter>
   );
