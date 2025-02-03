@@ -128,10 +128,6 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',  # El dominio donde corre tu aplicación de React
-]
-
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
@@ -140,3 +136,5 @@ REST_FRAMEWORK = {
 
 MEDIA_URL = '/media/'  # Prefijo de la URL para archivos subidos
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Carpeta donde se guardarán los archivos subidos
+
+CORS_ALLOW_ALL_ORIGINS = True

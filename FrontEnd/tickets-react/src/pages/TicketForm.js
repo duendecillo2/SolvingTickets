@@ -16,6 +16,7 @@ const CreateTicketForm = () => {
         const fetchData = async () => {
             const data = await fetchCategorias();
             setCategorias(data);
+            
         };
 
         fetchData();
@@ -23,30 +24,47 @@ const CreateTicketForm = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
+    
+        // Primero creamos el ticket
         const ticketData = {
             asunto,
-            mensaje,
             prioridad,
             categoria,
         };
 
         try {
             const token = localStorage.getItem('token'); 
-
+    
             if (!token) {
                 alert('No hay un token de autenticación válido. Por favor, inicie sesión.');
                 return;
             }
-
-            await axios.post('http://localhost:8000/api/tickets/', ticketData, {
+    
+            // Creamos el ticket
+            const ticketResponse = await axios.post('http://localhost:8000/api/tickets/', ticketData, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Token ${token}`, // Aquí se pasa correctamente el token
+                    'Authorization': `Token ${token}`,
                 },
             });
-
-            alert('Ticket creado exitosamente');
+    
+            const ticketId = ticketResponse.data.id;
+    
+            // Luego creamos el mensaje asociado al ticket
+            const mensajeData = {
+                ticket: ticketId,  // Asociamos el mensaje al ticket recién creado
+                mensaje,           // El mensaje que el usuario escribió
+            };
+    
+            // Enviamos el mensaje
+            await axios.post('http://localhost:8000/api/ticket-messages/', mensajeData, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Token ${token}`,
+                },
+            });
+    
+            alert('Ticket y mensaje creados exitosamente');
             navigate('/dashboard');
         } catch (error) {
             console.error('Error al crear el ticket:', error);

@@ -23,7 +23,6 @@ class Ticket(models.Model):
     ]
 
     asunto = models.CharField(max_length = 100)
-    mensaje = models.TextField() 
     estado = models.CharField(max_length = 1, choices = ESTADO_CHOICES, default = 'P')
     prioridad = models.CharField(max_length = 1, choices = PRIORIDAD_CHOICES, default = 'M')
     categoria = models.ForeignKey(Categoria, on_delete = models.SET_NULL, null = True, related_name = 'tickets') 
@@ -31,12 +30,19 @@ class Ticket(models.Model):
     agente = models.ForeignKey(User, on_delete=models.SET_NULL, null = True, blank = True, related_name = 'tickets_asignados') 
     fecha_creacion = models.DateTimeField(auto_now_add = True) 
     fecha_actualizacion = models.DateTimeField(auto_now = True)
-    respuesta = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.asunto} - {self.get_estado_display()}" #get_estado_display(): 
 
-        
+class TicketMessage(models.Model):
+    ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE, related_name='messages')
+    mensaje = models.TextField()  # El mensaje original del usuario
+    respuesta = models.TextField(null=True, blank=True)  # La respuesta del agente
+    created_at = models.DateTimeField(auto_now_add=True)  # Fecha de creación del mensaje
+
+    def __str__(self):
+        return f"Message for ticket {self.ticket.id} at {self.created_at}"
+
 class UserProfile(models.Model):
 
     ROLE_CHOICES = [

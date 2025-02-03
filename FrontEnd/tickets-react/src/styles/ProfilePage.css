@@ -10,6 +10,7 @@
     height: 350px;
 }
 
+/* Título */
 .profile-title {
     text-align: center;
     margin-bottom: 20px;
@@ -17,6 +18,7 @@
     color: #7D3C98; /* Morado principal */
 }
 
+/* Sección de la foto de perfil */
 .profile-section {
     float: left;
     display: flex;
@@ -27,12 +29,14 @@
     margin-top: 30px;
 }
 
+/* Subtítulo de las secciones */
 .profile-subtitle {
     margin-top: 10px;
     font-size: 1.2rem;
     color: #ccc; /* Texto gris claro */
 }
 
+/* Detalles del perfil */
 .profile-details {
     border-top: 1px solid #444;
     padding-top: 20px;
@@ -45,4 +49,39 @@
 
 .profile-details strong {
     color: #7D3C98;
+}
+
+/* Media query para dispositivos móviles */
+@media (max-width: 768px) {
+    .profile-page-container {
+        padding: 10px; /* Menos espacio en los laterales */
+        height: auto; /* Ajuste automático del alto */
+    }
+
+    .profile-title {
+        font-size: 1.5rem; /* Reducir tamaño de fuente en dispositivos móviles */
+    }
+
+    .profile-section {
+        float: none;
+        margin-right: 0;
+        margin-bottom: 20px;
+        margin-top: 10px;
+    }
+
+    .profile-details {
+        padding-top: 10px;
+    }
+
+    .profile-subtitle {
+        font-size: 1rem; /* Reducir subtítulos */
+    }
+
+    .profile-details p {
+        font-size: 0.9rem; /* Reducir tamaño del texto */
+    }
+
+    .profile-details strong {
+        font-size: 1rem; /* Ajustar tamaño de texto */
+    }
 }

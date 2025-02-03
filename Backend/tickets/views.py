@@ -1,7 +1,7 @@
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated
-from .models import Ticket, Categoria, UserProfile
-from .serializers import TicketSerializer, CategoriaSerializer, UserSerializer
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from .models import Ticket, Categoria, UserProfile, TicketMessage
+from .serializers import TicketSerializer, CategoriaSerializer, UserSerializer, TicketMessageSerializer
 from rest_framework.response import Response
 from django.contrib.auth.models import User
 from rest_framework import status
@@ -18,31 +18,27 @@ from django.core.files.storage import FileSystemStorage
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import MultiPartParser, FormParser
 from django.db.models import Count
+from rest_framework.views import APIView
+from django.http import JsonResponse
 
 class TicketViewSet(viewsets.ModelViewSet):
     queryset = Ticket.objects.all()
     serializer_class = TicketSerializer
     permission_classes = [IsAuthenticated]
 
-    @action(detail=True, methods=['post'], url_path='responder', permission_classes=[IsAuthenticated])
-    def responder_ticket(self,request,pk=None):
+    @action(detail=True, methods=['patch'], url_path='actualizar-estado', permission_classes=[IsAuthenticated])
+    def actualizar_estado(self, request, pk=None):
         ticket = self.get_object()
-        if request.user.profile.role != 'agent':
-            return Response({'error': 'No tienes permiso para responder tickets'}, status=400)
+        nuevo_estado = request.data.get('estado')
 
-        respuesta = request.data.get('respuesta')
+        # Validar que el nuevo estado es válido
+        if nuevo_estado not in dict(Ticket.ESTADO_CHOICES).keys():
+            return Response({'error': 'Estado no válido'}, status=status.HTTP_400_BAD_REQUEST)
 
-        #Compruebo si se obtiene la respuesta
-        if not respuesta:
-            return Response({'error' : 'Se requiere una respuesta'}, status=400)
-
-        ticket.estado = 'R'    
-        ticket.respuesta = respuesta
-        ticket.agente = request.user
+        ticket.estado = nuevo_estado
         ticket.save()
 
-        return Response({"exito" : "El ticket ha sido respondido correctamente"})
-
+        return Response({'mensaje': 'Estado actualizado correctamente', 'estado': ticket.estado}, status=status.HTTP_200_OK)
 
     def get_queryset(self):
 
@@ -54,7 +50,99 @@ class TicketViewSet(viewsets.ModelViewSet):
         return Ticket.objects.filter(usuario=self.request.user)
 
     def perform_create(self, serializer):
-        serializer.save(usuario=self.request.user)  
+        serializer.validated_data['usuario'] = self.request.user
+
+        # Buscar el agente con menos tickets asignados
+        agente_asignado = User.objects.filter(profile__role='agent') \
+                                    .annotate(num_tickets=Count('tickets_asignados')) \
+                                    .order_by('num_tickets') \
+                                    .first()
+
+        # Si hay agentes disponibles, asignar el que tenga menos tickets
+        if agente_asignado:
+            serializer.validated_data['agente'] = agente_asignado
+
+        serializer.save()
+
+class TicketMessageViewSet(viewsets.ModelViewSet):
+    queryset = TicketMessage.objects.all()
+    serializer_class = TicketMessageSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        # Filtrar los mensajes por ticket
+        ticket_id = self.request.query_params.get('ticket')
+        if ticket_id:
+            return TicketMessage.objects.filter(ticket_id=ticket_id)
+        return TicketMessage.objects.all()
+
+    @action(detail=True, methods=['post'], url_path='responder', permission_classes=[IsAuthenticated])
+    def responder_mensaje(self, request, pk=None):
+        """
+        Permite que un administrador responda a un mensaje específico de un ticket.
+        """
+        try:
+            ticket_message = TicketMessage.objects.get(pk=pk)
+        except TicketMessage.DoesNotExist:
+            return Response({'error': 'Mensaje no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+
+        if request.user.profile.role != 'agent':
+            return Response({'error': 'No tienes permiso para responder mensajes'}, status=status.HTTP_403_FORBIDDEN)
+
+        respuesta = request.data.get('respuesta')
+
+        # Validar que se envió una respuesta
+        if not respuesta:
+            return Response({'error': 'Se requiere una respuesta'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Actualizar la respuesta del mensaje
+        ticket_message.respuesta = respuesta
+        ticket_message.save()
+
+        # Actualizar el estado del ticket si no está "Cerrado"
+        ticket = ticket_message.ticket
+        if ticket.estado != 'C':
+            ticket.estado = 'R'  # Marcamos como Respondido
+            ticket.agente = request.user
+            ticket.save()
+
+        return Response({"mensaje": "La respuesta ha sido registrada correctamente"}, status=status.HTTP_200_OK)
+
+    def create(self, request, *args, **kwargs):
+        """
+        Permite a un usuario enviar un nuevo mensaje asociado a un ticket.
+        """
+        
+        ticket_id = request.data.get('ticket')
+        mensaje = request.data.get('mensaje')
+
+        # Validar que se envíe el ticket y el mensaje
+        if not ticket_id or not mensaje:
+            return Response({'error': 'Se requiere un ticket y un mensaje'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            ticket = Ticket.objects.get(pk=ticket_id)
+        except Ticket.DoesNotExist:
+            return Response({'error': 'El ticket no existe'}, status=status.HTTP_404_NOT_FOUND)
+
+        # Crear una nueva instancia de TicketMessage
+        ticket_message = TicketMessage.objects.create(
+            ticket=ticket,
+            mensaje=mensaje
+        )
+
+        # Si el ticket está cerrado, no permitir enviar mensajes
+        if ticket.estado == 'C':
+            return Response({'error': 'No se pueden enviar mensajes a un ticket cerrado'}, status=status.HTTP_400_BAD_REQUEST)
+
+        ticket_message.save()
+
+        # Cambiar el estado del ticket a Pendiente si es necesario
+        if ticket.estado != 'C':
+            ticket.estado = 'P'  # Pendiente
+            ticket.save()
+
+        return Response({"mensaje": "El mensaje ha sido enviado correctamente"}, status=status.HTTP_201_CREATED)    
 
 class CategoriaViewSet(viewsets.ModelViewSet):
     queryset = Categoria.objects.all()
@@ -63,6 +151,7 @@ class CategoriaViewSet(viewsets.ModelViewSet):
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = [AllowAny]
 
     def perform_create(self, serializer):
         user = serializer.save()
@@ -70,10 +159,9 @@ class UserViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
 
-            
         # Filtra los usuarios para que solo se muestren los del usuario autenticado
-        return User.objects.filter(id=self.request.user.id)    
-
+        return User.objects.filter(id=self.request.user.id)  
+    
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
         instance.first_name = request.data.get('first_name', instance.first_name)
@@ -82,6 +170,8 @@ class UserViewSet(viewsets.ModelViewSet):
         instance.save()
         return Response(UserSerializer(instance).data)
         
+
+
 @api_view(['POST'])
 def login(request):
 
@@ -165,3 +255,56 @@ def ticket_stats(request):
         'closed_percentage': closed_percentage,
     }
     return Response(data)
+
+def get_users(request):
+        users = User.objects.all().select_related('profile').values(
+            'id', 'username', 'email', 'is_active', 'profile__role'
+        )
+        user_list = list(users)
+        return JsonResponse(user_list, safe=False)
+
+def get_user(request, pk):
+    user = User.objects.filter(pk=pk).select_related('profile').values(
+        'id', 'username', 'email', 'is_active', 'profile__role'
+    )
+    return JsonResponse(list(user), safe=False)  
+
+class DeleteUserView(APIView):
+    permission_classes = [IsAuthenticated]  # Permite solo a usuarios autenticados
+
+    def delete(self, request, user_id):
+        print("holaa")
+        try:
+            user = User.objects.get(id=user_id)
+            if request.user.profile.role != 'agent':
+                return Response({"detail": "No tienes permiso para eliminar usuarios."}, status=status.HTTP_403_FORBIDDEN)
+            user.delete()
+            return Response({"message": "User deleted successfully."}, status=204)
+        except User.DoesNotExist:
+            return Response({"error": "User not found."}, status=404)
+
+class EditUserView(APIView):
+    permission_classes = [IsAuthenticated]  # Solo usuarios autenticados pueden editar
+
+    def patch(self, request, user_id):
+        try:
+            user = User.objects.get(id=user_id)
+            profile = user.profile
+
+            # Verificar si el usuario que realiza la acción es un agente
+            if request.user.profile.role != 'agent':
+                return Response({"detail": "No tienes permiso para editar usuarios."}, status=status.HTTP_403_FORBIDDEN)
+
+            # Obtener el nuevo rol del cuerpo de la solicitud
+            new_role = request.data.get('role')
+            if new_role not in ['user', 'agent']:
+                return Response({"detail": "Rol no válido."}, status=status.HTTP_400_BAD_REQUEST)
+
+            # Actualizar el rol del usuario
+            profile.role = new_role
+            profile.save()
+
+            return Response({"message": "User role updated successfully."}, status=status.HTTP_200_OK)
+
+        except User.DoesNotExist:
+            return Response({"error": "User not found."}, status=status.HTTP_404_NOT_FOUND)            

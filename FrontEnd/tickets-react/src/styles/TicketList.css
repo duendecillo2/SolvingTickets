@@ -11,12 +11,14 @@
     border-radius: 8px;
     overflow: hidden;
     margin-top: 20px;
+    table-layout: fixed; /* Esto asegura que la tabla no se desborde horizontalmente */
 }
 
 .ticket-table th, .ticket-table td {
     padding: 15px;
     text-align: left;
     border: 1px solid #3c3c3c;
+    word-wrap: break-word; /* Hace que el contenido largo se ajuste */
 }
 
 .ticket-table th {
@@ -76,4 +78,23 @@
 
 .badge-Pendiente {
     background-color: #f1c40f;
+}
+
+/* Media Query para pantallas pequeñas */
+@media screen and (max-width: 768px) {
+    .ticket-table {
+        overflow-x: auto;
+        display: block;
+        -webkit-overflow-scrolling: touch; /* Hace que la tabla sea deslizable en móviles */
+    }
+
+    .ticket-table th, .ticket-table td {
+        padding: 10px; /* Menor padding para pantallas pequeñas */
+        font-size: 14px; /* Ajusta el tamaño del texto */
+    }
+
+    .ticket-list {
+        margin: 10px; /* Reduce el margen */
+        text-align: left; /* Alineación de texto más cómoda en móviles */
+    }
 }

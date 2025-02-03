@@ -33,7 +33,7 @@ const LoginForm = () => {
             if (userRole === 'user') {
                 navigate('/dashboard');
             } else {
-                navigate('/administracion');
+                navigate('/adminPage');
             }
 
             alert('Inicio de sesión exitoso');

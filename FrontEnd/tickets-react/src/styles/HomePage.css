@@ -125,3 +125,46 @@ body {
     color: white;
     text-align: justify;
 }
+
+/* 🎯 RESPONSIVE DESIGN */
+@media (max-width: 768px) {
+    .container {
+        padding-top: 50px;
+    }
+
+    .floating-container {
+        flex-direction: column;
+        text-align: center;
+        padding: 15px;
+        width: 90%;
+    }
+
+    .middle-logo {
+        width: 50vw; /* Más grande en móviles */
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+
+    .about-us {
+        max-width: 90%;
+    }
+
+    .vision-mission-container {
+        width: 90%;
+    }
+
+    .vision, .mission {
+        max-width: 100%;
+        text-align: center;
+        padding: 15px;
+    }
+
+    .faq-container {
+        max-width: 90%;
+        padding: 15px;
+    }
+
+    .faq-item h3 {
+        font-size: 18px;
+    }
+}
