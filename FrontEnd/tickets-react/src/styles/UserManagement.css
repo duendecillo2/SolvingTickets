@@ -122,3 +122,30 @@ tr.banned {
   background-color: #ffebee;
   opacity: 0.8;
 }
+
+/* Estilo base del botón */
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Estilo para el botón de "Ban User" (rojo) */
+.btn-ban {
+  background-color: red;
+  color: white;
+}
+
+/* Estilo para el botón de "Unban User" (celeste) */
+.btn-unban {
+  background-color: lightblue;
+  color: white;
+}
+
+/* Efecto hover */
+.btn:hover {
+  opacity: 0.8;
+}

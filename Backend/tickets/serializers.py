@@ -46,16 +46,24 @@ class UserSerializer(serializers.ModelSerializer):
 
 class UserProfileSerializer(serializers.ModelSerializer):
     role_display = serializers.CharField(source='get_role_display', read_only=True)
+    status_display = serializers.CharField(source='get_status_display', read_only=True)
 
     class Meta:
         model = UserProfile
-        fields = ['id', 'user', 'profile_image', 'bio', 'role', 'role_display']
+        fields = ['id', 'user', 'profile_image', 'bio', 'role', 'role_display', 'status', 'status_display']
 
     def update(self, instance, validated_data):
         profile_image = validated_data.get('profile_image', None)
+        role = validated_data.get('role', None)
+
         if profile_image:
             instance.profile_image = profile_image
+
+        # Asignar rol 'user' por defecto si el rol es nulo
+        if role is None:
+            instance.role = 'user'
+        else:
+            instance.role = role
+
         instance.save()
         return instance
-
-

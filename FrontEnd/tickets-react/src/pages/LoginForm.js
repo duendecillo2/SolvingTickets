@@ -28,8 +28,13 @@ const LoginForm = () => {
 
             const userRole = profileResponse.data[0].role;
             console.log(userRole)
+            const userStatus = profileResponse.data[0].status;
             //Redirigir segun el rol
-
+            if (userStatus === 'ban') {
+                alert("Tu cuenta ha sido baneada. Contacta al administrador.");
+                navigate('/login');
+                return;
+            }
             if (userRole === 'user') {
                 navigate('/dashboard');
             } else {

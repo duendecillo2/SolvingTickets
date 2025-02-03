@@ -50,6 +50,11 @@ class UserProfile(models.Model):
         ('agent', 'Agente'),
     ]
 
+    STATUS_CHOICES = [
+        ('active', 'Activo'),
+        ('ban','Baneado'),
+    ]
+
     # Relación uno a uno con el usuario
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
 
@@ -61,5 +66,7 @@ class UserProfile(models.Model):
 
     role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='user')
     
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='active')
+
     def __str__(self):
         return f"{self.user.username}'s Profile"

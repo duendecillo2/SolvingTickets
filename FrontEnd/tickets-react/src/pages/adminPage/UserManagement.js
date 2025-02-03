@@ -35,14 +35,15 @@ const UserManagement = () => {
         setLoading(false);
       }
     };
-
+    
     fetchUsers();
   }, []);
-
+  console.log(users)
   const handleEdit = (user) => {
     if (!editUser) { // Solo abrir si no hay un modal ya abierto
       setEditUser(user);
-      setNewRole(user.profile__role);
+      setNewRole(user.profile?.role || 'user');
+      console.log(user)
     }
   };
 
@@ -57,20 +58,25 @@ const UserManagement = () => {
         `http://localhost:8000/api/users/${editUser.id}/edit/`,
         { role: newRole },
         {
-          headers: {
-            'Authorization': `Token ${token}`},
+          headers: { 'Authorization': `Token ${token}` },
         }
       );
       // Actualizar el estado local
-      setUsers(
-        users.map((u) =>
+      setUsers((prevUsers) =>
+        prevUsers.map((u) =>
           u.id === editUser.id ? { ...u, profile__role: newRole } : u
         )
       );
       setEditUser(null);
     } catch (err) {
       console.error('Error saving user:', err.response?.data || err.message);
-      alert('Error al guardar. Verifica permisos de administrador.');
+      if (err.response?.status === 403 && err.response?.data?.detail === "Tu cuenta está baneada.") {
+        alert("Tu cuenta está baneada.");
+      } else {
+        alert(
+          err.response?.data?.detail || 'Error al guardar. Verifica permisos de administrador.'
+        );
+      }
     }
   };
 
@@ -103,40 +109,37 @@ const UserManagement = () => {
     }
   };
 
-  const handleToggleActive = async (userId, isActive) => {
-    try {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        throw new Error('No token found');
-      }
-
-
-      const response = await axios.patch(
-        `http://localhost:8000/api/users/${userId}/toggle-active/`,
-        { is_active: !isActive },
-        {
-          headers: {
-            'Authorization': `Token ${token}`,
-          },
-        }
-      );
-
-      if (response.status === 200) {
-        setUsers(
-          users.map((u) =>
-            u.id === userId ? { ...u, is_active: !isActive } : u
+  const handleToggleBan = async (userId, currentStatus) => {
+    
+    if (window.confirm(`Are you sure you want to ${currentStatus === 'active' ? 'ban' : 'unban'} this user?`)) {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) throw new Error('No token found');
+  
+        await axios.patch(
+          `http://localhost:8000/api/users/${userId}/ban/`,
+          {},
+          {
+            headers: { 'Authorization': `Token ${token}` },
+          }
+        );
+  
+        // Actualizar el estado local de usuarios
+        setUsers((prevUsers) =>
+          prevUsers.map((user) =>
+            user.id === userId
+              ? { ...user, profile__status: currentStatus === 'active' ? 'ban' : 'active' }
+              : user
           )
         );
-        alert(
-          `User has been ${!isActive ? 'unbanned' : 'banned'} successfully.`
-        );
+      } catch (err) {
+        console.error('Error banning/unbanning user:', err);
+        alert('Error updating user status.');
       }
-    } catch (err) {
-      console.error('Error toggling user active status:', err);
-      alert('Error: Only agents can perform this action.');
     }
   };
-
+  
+  
   if (loading) return <div className="loading">Loading users...</div>;
   if (error) return <div className="error">{error}</div>;
 
@@ -161,7 +164,7 @@ const UserManagement = () => {
               <td>{user.username}</td>
               <td>{user.email}</td>
               <td>{user.profile__role}</td>
-              <td>{user.is_active ? 'Active' : 'Banned'}</td>
+              <td>{user.profile__status}</td>
               <td>
                     <button
                       className="btn btn-edit"
@@ -176,13 +179,12 @@ const UserManagement = () => {
                       Delete
                     </button>
                     <button
-                      className={`btn ${
-                        user.is_active ? 'btn-danger' : 'btn-success'
-                      }`}
-                      onClick={() => handleToggleActive(user.id, user.is_active)}
-                    >
-                      {user.is_active ? 'Ban User' : 'Unban User'}
+                        className={`btn ${user.profile__status === 'active' ? 'btn-ban' : 'btn-unban'}`}
+                        onClick={() => handleToggleBan(user.id, user.profile__status)}
+                      >
+                        {user.profile__status === 'active' ? 'Ban User' : 'Unban User'}
                     </button>
+
                 
               </td>
             </tr>

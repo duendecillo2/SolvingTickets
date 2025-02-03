@@ -1,5 +1,5 @@
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
 from .models import Ticket, Categoria, UserProfile, TicketMessage
 from .serializers import TicketSerializer, CategoriaSerializer, UserSerializer, TicketMessageSerializer
 from rest_framework.response import Response
@@ -20,6 +20,7 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from django.db.models import Count
 from rest_framework.views import APIView
 from django.http import JsonResponse
+from django.contrib.auth import authenticate, login
 
 class TicketViewSet(viewsets.ModelViewSet):
     queryset = Ticket.objects.all()
@@ -258,14 +259,14 @@ def ticket_stats(request):
 
 def get_users(request):
         users = User.objects.all().select_related('profile').values(
-            'id', 'username', 'email', 'is_active', 'profile__role'
+            'id', 'username', 'email', 'is_active', 'profile__role', 'profile__status'
         )
         user_list = list(users)
         return JsonResponse(user_list, safe=False)
 
 def get_user(request, pk):
     user = User.objects.filter(pk=pk).select_related('profile').values(
-        'id', 'username', 'email', 'is_active', 'profile__role'
+        'id', 'username', 'email', 'is_active', 'profile__role', 'profile__status'
     )
     return JsonResponse(list(user), safe=False)  
 
@@ -285,7 +286,7 @@ class DeleteUserView(APIView):
 
 class EditUserView(APIView):
     permission_classes = [IsAuthenticated]  # Solo usuarios autenticados pueden editar
-
+    
     def patch(self, request, user_id):
         try:
             user = User.objects.get(id=user_id)
@@ -307,4 +308,18 @@ class EditUserView(APIView):
             return Response({"message": "User role updated successfully."}, status=status.HTTP_200_OK)
 
         except User.DoesNotExist:
-            return Response({"error": "User not found."}, status=status.HTTP_404_NOT_FOUND)            
+            return Response({"error": "User not found."}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['PATCH'])
+@permission_classes([IsAuthenticated])  # Solo administradores pueden banear/desbanear
+def toggle_ban_user(request, user_id):
+    try:
+        user = User.objects.get(id=user_id)
+        profile = user.profile
+        profile.status = 'ban' if profile.status == 'active' else 'active'
+        profile.save()
+        return Response({"message": f"User {user.username} is now {profile.status}"})
+    except User.DoesNotExist:
+        return Response({"error": "User not found"}, status=404)
