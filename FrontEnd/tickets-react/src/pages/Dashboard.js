@@ -13,7 +13,7 @@ const Dashboard = () => {
 
     const links = [
         { path: '/profile', label: 'Perfil' },
-        { path: '/settings', label: 'Configuración' },
+        { path: '/administradores', label: 'Administradores' },
         { path: '/logout', label: 'Cerrar Sesión' },
     ];
 

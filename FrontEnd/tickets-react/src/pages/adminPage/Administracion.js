@@ -280,7 +280,7 @@ const Administracion = () => {
             rows={4}
             variant="outlined"
             fullWidth
-            value={responseMessage}
+            value={ticketMessages[selectedMessageIndex]?.respuesta || responseMessage}
             onChange={(e) => setResponseMessage(e.target.value)}
             sx={{
               marginBottom: 2,
