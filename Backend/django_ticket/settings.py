@@ -134,7 +134,7 @@ REST_FRAMEWORK = {
     ],
 }    
 
-MEDIA_URL = '/media/'  # Prefijo de la URL para archivos subidos
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Carpeta donde se guardarán los archivos subidos
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 CORS_ALLOW_ALL_ORIGINS = True

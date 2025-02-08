@@ -7,8 +7,9 @@ import { BsAirplaneFill } from "react-icons/bs";
 
 const HomePage = () => {
     const links = [
-        { path: '/register', label: 'Registrar' },
         { path: '/login', label: 'Iniciar Sesión' },
+        { path: '/register', label: 'Registrar' },
+        { path: '/Administradores', label: 'Administradores' },
     ];
 
     const [activeQuestion, setActiveQuestion] = useState(null); // Estado para controlar qué pregunta está activa
