@@ -11,6 +11,7 @@ import Profile from './pages/Profile';
 import Administracion from './pages/adminPage/Administracion'
 import AdminStats from './pages/adminPage/Estadisticas'
 import AdminPage from './pages/AdminPage'
+import Administradores from './pages/Administradores';
 
 function App() {
   return (
@@ -25,7 +26,8 @@ function App() {
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/Administracion" element={<Administracion/>} />
                 <Route path="/Estadisticas" element={<AdminStats/>} />
-                <Route path="/adminPage" element={<AdminPage/>}/>
+                <Route path="/adminPage" element={<AdminPage/>} /> 
+                <Route path="/administradores" element={<Administradores/>} />
             </Routes>
     </BrowserRouter>
   );
