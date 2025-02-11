@@ -14,7 +14,7 @@ const Administradores = () => {
             .then(data => setAdmins(data))
             .catch(error => console.error("Error al obtener administradores:", error));
     }, []);
-
+    console.log(admins)
     const openModal = (admin) => {
         setSelectedAdmin(admin);
         setModalIsOpen(true);
@@ -23,18 +23,6 @@ const Administradores = () => {
     const closeModal = () => {
         setModalIsOpen(false);
         setSelectedAdmin(null);
-    };
-
-    const nextAdmin = () => {
-        const currentIndex = admins.findIndex(admin => admin.id === selectedAdmin.id);
-        const nextIndex = (currentIndex + 1) % admins.length;
-        setSelectedAdmin(admins[nextIndex]);
-    };
-
-    const prevAdmin = () => {
-        const currentIndex = admins.findIndex(admin => admin.id === selectedAdmin.id);
-        const prevIndex = (currentIndex - 1 + admins.length) % admins.length;
-        setSelectedAdmin(admins[prevIndex]);
     };
 
     return (
@@ -75,31 +63,39 @@ const Administradores = () => {
                     contentLabel="Perfil del Administrador"
                     className="admin-modal"
                     overlayClassName="admin-modal-overlay"
-                    shouldCloseOnOverlayClick={true} // Cierra el modal al hacer clic fuera
+                    shouldCloseOnOverlayClick={true}
                 >
-                    <div className="modal-header">
+                    <div className="modal-content">
                         <div className="modal-image">
                             <img
                                 src={selectedAdmin.profile_image ? `http://localhost:8000${selectedAdmin.profile_image}` : "/default-profile.png"}
                                 alt={selectedAdmin.username}
                             />
                         </div>
-                        <div className="modal-info">
-                            <h2>{selectedAdmin.username}</h2>
-                            <p>Biografía: {selectedAdmin.bio}</p>
+                        <h2 className="modal-name">{selectedAdmin.username}</h2>
+                        <p className="modal-bio">Biografia: {selectedAdmin.bio}</p>
+
+                        <div class="modal-reviews">
+                                <p>⭐ Opinión 1: Muy buen administrador...</p>
+                                <p>⭐ Opinión 2: Responde rápido...</p>
+                                <p>⭐ Opinión 3: Excelente atención...</p>
+                                <p>⭐ Opinión 1: Muy buen administrador...</p>
+                                <p>⭐ Opinión 2: Responde rápido...</p>
+                                <p>⭐ Opinión 3: Excelente atención...</p>
+                                <p>⭐ Opinión 1: Muy buen administrador...</p>
+                                <p>⭐ Opinión 2: Responde rápido...</p>
+                                <p>⭐ Opinión 3: Excelente atención...</p>
+                                <p>⭐ Opinión 1: Muy buen administrador...</p>
+                                <p>⭐ Opinión 2: Responde rápido...</p>
+                                <p>⭐ Opinión 3: Excelente atención...</p>
+                                -- Más opiniones aquí --
                         </div>
-                    </div>
-                    <div className="reviews-section">
-                        <h3>Reseñas</h3>
-                        {/* Aquí se agregarán las reseñas */}
-                        <p>No hay reseñas disponibles.</p>
-                    </div>
-                    <div className="modal-buttons">
-                        <button onClick={prevAdmin}>Anterior</button>
-                        <button onClick={nextAdmin}>Siguiente</button>
+                        
+                        
                     </div>
                 </Modal>
             )}
+
         </div>
     );
 };

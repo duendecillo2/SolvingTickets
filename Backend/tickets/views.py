@@ -337,3 +337,17 @@ def listar_administradores(request):
         for admin in administradores
     ]
     return Response(data)
+
+@api_view(['GET'])
+def listar_administradores(request):
+    administradores = UserProfile.objects.filter(role='agent')
+    data = [
+        {
+            "id": admin.user.id,
+            "username": admin.user.username,
+            "profile_image": admin.profile_image.url if admin.profile_image else None,
+            "bio": admin.bio
+        }
+        for admin in administradores
+    ]
+    return Response(data)

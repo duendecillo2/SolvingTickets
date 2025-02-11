@@ -16,7 +16,11 @@ body {
 
 .admin-card {
     background: #000;
+<<<<<<< HEAD
     border: 3px solid #0ef;
+=======
+    border: 3px solid rgba(125, 60, 152, 0.7);;
+>>>>>>> origin/production---checa
     border-radius: 20px;
     position: relative;
     width: 250px;
@@ -148,7 +152,12 @@ body {
     background: #000000;
     padding: 20px;
     border-radius: 10px;
+<<<<<<< HEAD
     max-width: 500px;
+=======
+    width: 25%;  /* Aumenta el ancho */
+    max-width: 700px;
+>>>>>>> origin/production---checa
     margin: auto;
     text-align: center;
 }
@@ -163,8 +172,15 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+<<<<<<< HEAD
 }
 
+=======
+    z-index: 1000; /* Asegurar que el overlay está sobre todo */
+}
+
+
+>>>>>>> origin/production---checa
 .modal-buttons {
     display: flex;
     justify-content: space-between;
@@ -211,4 +227,23 @@ body {
 
 .modal-info {
     text-align: left;
+<<<<<<< HEAD
+=======
+}
+
+.modal-content {
+    display: flex; /* Para centrar contenido */
+    flex-direction: column; /* Alinear en columna */
+    align-items: center; /* Centrar horizontalmente */
+}
+
+.modal-reviews {
+    max-height: 200px; /* Ajusta la altura según lo que necesites */
+    overflow-y: auto; /* Habilita el scroll solo si es necesario */
+    width: 100%;
+    padding: 10px;
+    margin-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2); /* Separador */
+    text-align: left; /* Para mejor legibilidad */
+>>>>>>> origin/production---checa
 }

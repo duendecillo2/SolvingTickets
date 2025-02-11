@@ -22,7 +22,6 @@ urlpatterns = [
     path('api/users/<int:user_id>/edit/', EditUserView.as_view(), name='edit-user'),
     path('api/users/<int:user_id>/ban/', toggle_ban_user, name='toggle-ban-user'),
     path('api/administradores/', listar_administradores, name='listar_administradores'),
-
 ]
 
 
