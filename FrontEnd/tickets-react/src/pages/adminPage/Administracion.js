@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { DataGrid } from '@mui/x-data-grid';
-import { Modal, Box, TextField, Button } from '@mui/material';
+import { Modal, Box, TextField, Button, MenuItem, Select, InputLabel, FormControl } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import '../../styles/AdminTicketList.module.css';
 import { MdNavigateBefore } from "react-icons/md";
@@ -46,6 +46,9 @@ const Administracion = () => {
   const [selectedMessageIndex, setSelectedMessageIndex] = useState(0);
   const [responseMessage, setResponseMessage] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isTechnicianModalOpen, setIsTechnicianModalOpen] = useState(false);
+  const [technicians, setTechnicians] = useState([]);
+  const [selectedTechnician, setSelectedTechnician] = useState('');
 
   useEffect(() => {
     const fetchTickets = async () => {
@@ -122,9 +125,17 @@ const Administracion = () => {
         return;
       }
 
+      let fullResponseMessage = responseMessage; // Valor inicial con solo la respuesta
+      if (selectedTechnician) {
+        // Concatenar el técnico seleccionado
+        fullResponseMessage += ` - Asignado a: ${selectedTechnician}`;
+      }
+      
+  
+
       await axios.post(
         `http://localhost:8000/api/ticket-messages/${ticketMessages[selectedMessageIndex].id}/responder/`,
-        { respuesta: responseMessage },
+        { respuesta: fullResponseMessage },
         {
           headers: {
             'Content-Type': 'application/json',
@@ -169,6 +180,24 @@ const Administracion = () => {
     }
   };
 
+  const handleTechnician = async () => {
+    const confirmTechnician = window.confirm('¿Estás seguro de que deseas asignar un técnico a este ticket?');
+    if (!confirmTechnician) return;
+    // Emulación de datos
+    setTechnicians([
+      { id: 1, nombre: 'Técnico Carlos', profesion: 'Redes' },
+      { id: 2, nombre: 'Técnico María', profesion: 'Soporte' },
+    ]);
+    setIsTechnicianModalOpen(true);
+  };
+
+  const handleSelectTechnician = (e) => {
+    setSelectedTechnician(e.target.value);
+    setIsTechnicianModalOpen(false);
+    alert(`Técnico seleccionado: ${e.target.value}`);
+  };
+
+  
   const columns = [
     { field: 'id', headerName: 'ID', width: 70 },
     { field: 'asunto', headerName: 'Asunto', width: 200 },
@@ -298,6 +327,51 @@ const Administracion = () => {
             Enviar
           </Button>
           <Button variant="outlined" onClick={handleCloseModal} color="secondary">
+            Cancelar
+          </Button>
+          <Button variant="contained" onClick={handleTechnician} sx={{ marginLeft: 7 }}>
+            ...
+          </Button>
+        </Box>
+      </Modal>
+
+      <Modal open={isTechnicianModalOpen} onClose={() => setIsTechnicianModalOpen(false)}>
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            bgcolor: '#1c1c1c',
+            color: '#ffffff',
+            borderRadius: '10px',
+            boxShadow: 24,
+            p: 4,
+            width: '400px',
+          }}
+        >
+          <h2>Seleccionar Técnico</h2>
+          <FormControl fullWidth>
+            <InputLabel id="label-tecnico">Técnico</InputLabel>
+            <Select
+              labelId="label-tecnico"
+              value={selectedTechnician}
+              onChange={handleSelectTechnician}
+              sx={{
+                marginBottom: 2,
+                backgroundColor: '#333333',
+                borderRadius: '5px',
+                color: '#ffffff',
+              }}
+            >
+              {technicians.map((tech) => (
+                <MenuItem key={tech.id} value={tech.nombre}>
+                  {tech.nombre} - {tech.profesion}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <Button variant="contained" color="secondary" onClick={() => setIsTechnicianModalOpen(false)}>
             Cancelar
           </Button>
         </Box>
