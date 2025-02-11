@@ -11,7 +11,11 @@ import Profile from './pages/Profile';
 import Administracion from './pages/adminPage/Administracion'
 import AdminStats from './pages/adminPage/Estadisticas'
 import AdminPage from './pages/AdminPage'
+import Administradores from './pages/Administradores';
+<<<<<<< HEAD
+=======
 
+>>>>>>> origin/production---checa
 function App() {
   return (
     <BrowserRouter>
@@ -25,7 +29,13 @@ function App() {
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/Administracion" element={<Administracion/>} />
                 <Route path="/Estadisticas" element={<AdminStats/>} />
+<<<<<<< HEAD
                 <Route path="/adminPage" element={<AdminPage/>}/>
+                <Route path="/Administradores" element={<Administradores/>}/>
+=======
+                <Route path="/adminPage" element={<AdminPage/>} /> 
+                <Route path="/administradores" element={<Administradores/>} />
+>>>>>>> origin/production---checa
             </Routes>
     </BrowserRouter>
   );
