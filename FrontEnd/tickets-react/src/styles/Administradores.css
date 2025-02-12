@@ -231,3 +231,101 @@ body {
     border-top: 1px solid rgba(255, 255, 255, 0.2); /* Separador */
     text-align: left; /* Para mejor legibilidad */
 }
+
+/* Media query para dispositivos móviles */
+@media (max-width: 768px) {
+    /* Ajustes generales */
+    body {
+        font-size: 14px; /* Reducir el tamaño de la fuente para móviles */
+    }
+
+    /* Contenedor del admin (si corresponde) */
+    .admin-container {
+        padding: 10px;
+    }
+
+    .admin-grid {
+        flex-direction: column; /* Cambiar a columna para dispositivos móviles */
+        gap: 10px;
+    }
+
+    /* Ajustes para las tarjetas */
+    .admin-card {
+        width: 75%; /* Asegurar que la tarjeta ocupe todo el ancho disponible */
+        padding: 15px;
+        margin-bottom: 10px;
+        margin-left: auto; /* Asegura que las tarjetas se centren */
+        margin-right: auto; /* Asegura que las tarjetas se centren */
+    }
+
+    .image {
+        width: 120px; /* Reducir el tamaño de la imagen */
+        height: 120px;
+    }
+
+    /* Ajustes para la biografía */
+    .name-profession {
+        margin-top: 10px;
+    }
+
+    .name {
+        font-size: 1.5rem; /* Aumentar el tamaño de nombre */
+    }
+
+    .profession {
+        font-size: 1.2rem; /* Aumentar el tamaño de la profesión */
+    }
+
+    /* Ajustes para las opiniones */
+    .rating {
+        margin-top: 12px;
+        font-size: 16px; /* Aumentar el tamaño de las estrellas de la calificación */
+    }
+
+    .button {
+        flex-direction: column; /* Poner los botones uno debajo del otro */
+        gap: 10px;
+    }
+
+    .button button, .button .view-profile {
+        font-size: 16px; /* Aumentar el tamaño de los botones */
+        padding: 12px 20px;
+    }
+
+    /* Ajustes para el modal */
+    .admin-modal {
+        width: 90%; /* Hacer el modal más pequeño y adaptado */
+        max-width: 100%;
+        padding: 15px;
+    }
+
+    .modal-header {
+        flex-direction: center; /* Colocar la imagen y los detalles en columna */
+        align-items: center;
+    }
+
+    .modal-image {
+        width: 100px; /* Reducir tamaño de la imagen */
+        height: 100px;
+    }
+
+    .modal-info {
+        margin-top: 10px; /* Separar la información */
+    }
+
+    .modal-content {
+        flex-direction: center; /* Alinear en columna */
+        align-items: center;
+    }
+
+    .modal-reviews {
+        padding: 10px;
+        max-height: 150px; /* Ajustar altura del contenedor de reseñas */
+        overflow-y: auto;
+    }
+
+    /* Estilos para las opiniones en el modal */
+    .modal-reviews p {
+        font-size: 1rem; /* Asegurar que el texto de las reseñas sea legible */
+    }
+}

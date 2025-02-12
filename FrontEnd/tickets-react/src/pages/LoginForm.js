@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
 import styles from '../styles/LoginRegisterForm.module.css'; 
+import BackButton from '../components/BackButton';
 
 const LoginForm = () => {
     const [username, setUsername] = useState('');
@@ -31,7 +33,7 @@ const LoginForm = () => {
             const userStatus = profileResponse.data[0].status;
             //Redirigir segun el rol
             if (userStatus === 'ban') {
-                alert("Tu cuenta ha sido baneada. Contacta al administrador.");
+                toast.info("Tu cuenta ha sido baneada. Contacta al administrador.");
                 navigate('/login');
                 return;
             }
@@ -41,11 +43,11 @@ const LoginForm = () => {
                 navigate('/adminPage');
             }
 
-            alert('Inicio de sesión exitoso');
+            toast.success('Inicio de sesión exitoso');
             
         } catch (error) {
             console.error('Error en el inicio de sesión:', error);
-            alert('Error en el inicio de sesión. Verifica tus credenciales.');
+            toast.error('Error en el inicio de sesión. Verifica tus credenciales.');
         }
     };
 
@@ -55,6 +57,7 @@ const LoginForm = () => {
             <div className={styles.formWrapper}>
                 <form onSubmit={handleSubmit}>
                     <h2 className={styles.h2}>Login</h2>
+                    <BackButton text="Volver" goHome={true} />
                     <div className={styles.inputGroup}>
                         <input
                             type="text"

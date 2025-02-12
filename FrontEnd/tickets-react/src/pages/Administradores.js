@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FaLinkedin } from 'react-icons/fa';
 import Modal from 'react-modal';
 import '../styles/Administradores.css';
+import BackButton from '../components/BackButton';
 
 const Administradores = () => {
     const [admins, setAdmins] = useState([]);
@@ -28,6 +29,7 @@ const Administradores = () => {
     return (
         <div className="admin-container">
             <h2>Administradores</h2>
+            <BackButton/>
             <div className="admin-grid">
                 {admins.length > 0 ? (
                     admins.map(admin => (

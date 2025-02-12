@@ -1,6 +1,7 @@
 import './App.css';
 import React from 'react';
 import { BrowserRouter , Route, Routes } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 import Dashboard from './pages/Dashboard'; 
 import TicketForm from './pages/TicketForm'
 import TicketList from './pages/TicketList'
@@ -16,6 +17,7 @@ import Administradores from './pages/Administradores';
 function App() {
   return (
     <BrowserRouter>
+    <Toaster />
             <Routes>
                 <Route path="/" element={<HomePage/>}/>
                 <Route path="/Dashboard" element={<Dashboard/>} />
