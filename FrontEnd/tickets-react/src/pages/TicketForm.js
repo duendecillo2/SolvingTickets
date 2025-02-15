@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { fetchCategorias } from '../utils/categoria'; // Asegúrate de tener este archivo en tu proyecto
+import { fetchCategorias } from '../utils/categoria';
 import styles from '../styles/CreateTicketForm.module.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
+import BackButton from '../components/BackButton';
 
 const CreateTicketForm = () => {
     const [asunto, setAsunto] = useState('');
@@ -31,17 +33,17 @@ const CreateTicketForm = () => {
             prioridad,
             categoria,
         };
-
+    
         try {
             const token = localStorage.getItem('token'); 
     
             if (!token) {
-                alert('No hay un token de autenticación válido. Por favor, inicie sesión.');
+                toast.error('No hay un token de autenticación válido. Por favor, inicie sesión.');
                 return;
             }
     
             // Creamos el ticket
-            const ticketResponse = await axios.post('http://localhost:8000/api/tickets/', ticketData, {
+            const ticketResponse = await axios.post(`${process.env.REACT_APP_API_URL}/tickets/`, ticketData, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Token ${token}`,
@@ -57,25 +59,25 @@ const CreateTicketForm = () => {
             };
     
             // Enviamos el mensaje
-            await axios.post('http://localhost:8000/api/ticket-messages/', mensajeData, {
+            await axios.post(`${process.env.REACT_APP_API_URL}/ticket-messages/`, mensajeData, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Token ${token}`,
                 },
             });
-    
-            alert('Ticket y mensaje creados exitosamente');
+            toast.success('Ticket y mensaje creados exitosamente');
             navigate('/dashboard');
         } catch (error) {
             console.error('Error al crear el ticket:', error);
-            alert('Error al crear el ticket. Verifica los datos ingresados.');
+            toast.error('Error al crear el ticket. Verifica los datos ingresados.');
         }
-    };
+    };    
 
     return (
         <div className={styles.container}>
             <form onSubmit={handleSubmit}>
                 <h2 className={styles.h2}>Crear Ticket</h2>
+                <BackButton text="Volver" />
                 <div className={styles.inputGroup}>
                     <input
                         type="text"
