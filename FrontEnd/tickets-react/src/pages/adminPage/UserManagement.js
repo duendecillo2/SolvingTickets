@@ -22,7 +22,7 @@ const UserManagement = () => {
         if (!token) {
           throw new Error('No token found');
         }
-        const response = await axios.get('http://localhost:8000/api/users/', {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/users/`, {
           headers: {
             'Authorization': `Token ${token}`,
           },
@@ -55,7 +55,7 @@ const UserManagement = () => {
   
       // Realizar la solicitud PATCH para actualizar el rol del usuario
       await axios.patch(
-        `http://localhost:8000/api/users/${editUser.id}/edit/`,
+        `${process.env.REACT_APP_API_URL}/users/${editUser.id}/edit/`,
         { role: newRole },
         {
           headers: { 'Authorization': `Token ${token}` },
@@ -89,7 +89,7 @@ const UserManagement = () => {
             throw new Error('No token found');
           }
           await axios.delete(
-            `http://localhost:8000/api/users/${userId}/delete/`,
+            `${process.env.REACT_APP_API_URL}/users/${userId}/delete/`,
             {
               headers: {
                 'Authorization': `Token ${token}`,
@@ -117,7 +117,7 @@ const UserManagement = () => {
         if (!token) throw new Error('No token found');
   
         await axios.patch(
-          `http://localhost:8000/api/users/${userId}/ban/`,
+          `${process.env.REACT_APP_API_URL}/users/${userId}/ban/`,
           {},
           {
             headers: { 'Authorization': `Token ${token}` },

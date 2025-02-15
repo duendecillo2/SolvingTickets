@@ -10,7 +10,7 @@ const Administradores = () => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
 
     useEffect(() => {
-        fetch("http://127.0.0.1:8000/api/administradores/")
+        fetch(`${process.env.REACT_APP_API_URL}/administradores/`)
             .then(response => response.json())
             .then(data => setAdmins(data))
             .catch(error => console.error("Error al obtener administradores:", error));
@@ -37,7 +37,7 @@ const Administradores = () => {
                             <div className="card-content">
                                 <div className="image">
                                     <img
-                                        src={admin.profile_image ? `http://localhost:8000${admin.profile_image}` : "/default-profile.png"}
+                                        src={admin.profile_image ? `${process.env.REACT_APP_URL}${admin.profile_image}` : "/default-profile.png"} 
                                         alt={admin.username}
                                     />
                                 </div>
@@ -70,7 +70,7 @@ const Administradores = () => {
                     <div className="modal-content">
                         <div className="modal-image">
                             <img
-                                src={selectedAdmin.profile_image ? `http://localhost:8000${selectedAdmin.profile_image}` : "/default-profile.png"}
+                                src={selectedAdmin.profile_image ? `${process.env.REACT_APP_URL}${selectedAdmin.profile_image}` : "/default-profile.png"}
                                 alt={selectedAdmin.username}
                             />
                         </div>

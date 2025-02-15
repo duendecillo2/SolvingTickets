@@ -54,7 +54,7 @@ const Administracion = () => {
     const fetchTickets = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:8000/api/tickets/', {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/tickets/`, { //Probar
           headers: {
             Authorization: `Token ${token}`,
           },
@@ -88,7 +88,7 @@ const Administracion = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.get(
-        `http://localhost:8000/api/ticket-messages/?ticket=${ticket.id}`,
+        `${process.env.REACT_APP_API_URL}/ticket-messages/?ticket=${ticket.id}`,
         {
           headers: {
             Authorization: `Token ${token}`,
@@ -134,7 +134,7 @@ const Administracion = () => {
   
 
       await axios.post(
-        `http://localhost:8000/api/ticket-messages/${ticketMessages[selectedMessageIndex].id}/responder/`,
+        `${process.env.REACT_APP_API_URL}/ticket-messages/${ticketMessages[selectedMessageIndex].id}/responder/`,
         { respuesta: fullResponseMessage },
         {
           headers: {
@@ -165,7 +165,7 @@ const Administracion = () => {
 
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:8000/api/tickets/${ticketId}/`, {
+      await axios.delete(`${process.env.REACT_APP_API_URL}/tickets/${ticketId}/`, {
         headers: {
           Authorization: `Token ${token}`,
         },

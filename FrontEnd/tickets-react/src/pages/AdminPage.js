@@ -3,7 +3,7 @@ import  UserManagement from '../pages/adminPage/UserManagement.js';
 import Administracion from '../pages/adminPage/Administracion';
 import AdminStats from '../pages/adminPage/Estadisticas';
 import '../styles/AdminPage.css';
-import BackButton from '../components/BackButton.jsx';
+
 
 
 const AdminPage = () => {

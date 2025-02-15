@@ -43,7 +43,7 @@ const CreateTicketForm = () => {
             }
     
             // Creamos el ticket
-            const ticketResponse = await axios.post('http://localhost:8000/api/tickets/', ticketData, {
+            const ticketResponse = await axios.post(`${process.env.REACT_APP_API_URL}/tickets/`, ticketData, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Token ${token}`,
@@ -59,13 +59,12 @@ const CreateTicketForm = () => {
             };
     
             // Enviamos el mensaje
-            await axios.post('http://localhost:8000/api/ticket-messages/', mensajeData, {
+            await axios.post(`${process.env.REACT_APP_API_URL}/ticket-messages/`, mensajeData, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Token ${token}`,
                 },
             });
-    
             toast.success('Ticket y mensaje creados exitosamente');
             navigate('/dashboard');
         } catch (error) {

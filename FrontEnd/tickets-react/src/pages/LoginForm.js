@@ -14,7 +14,7 @@ const LoginForm = () => {
         event.preventDefault();
 
         try {
-            const response = await axios.post('http://localhost:8000/api/login/', {
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/login/`, {
                 username,
                 password,
             });
@@ -22,7 +22,7 @@ const LoginForm = () => {
             const token = response.data.token;
             localStorage.setItem('token', token); 
 
-            const profileResponse = await axios.get('http://localhost:8000/api/profile', {
+            const profileResponse = await axios.get(`${process.env.REACT_APP_API_URL}/profile`, {
                 headers: {
                     'Authorization': `Token ${token}`,
                 },

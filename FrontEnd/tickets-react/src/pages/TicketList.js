@@ -27,7 +27,7 @@ const TicketList = () => {
         const fetchTickets = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const response = await axios.get('http://localhost:8000/api/tickets/', {
+                const response = await axios.get(`${process.env.REACT_APP_API_URL}/tickets/`, {
                     headers: {
                         'Authorization': `Token ${token}`,
                     },
@@ -55,7 +55,7 @@ const TicketList = () => {
         try {
             const token = localStorage.getItem('token');
             const response = await axios.get(
-                `http://localhost:8000/api/ticket-messages/?ticket=${ticket.id}`,
+                `${process.env.REACT_APP_API_URL}/ticket-messages/?ticket=${ticket.id}`,
             {
                 headers: {
                     Authorization: `Token ${token}`,
@@ -90,7 +90,7 @@ const TicketList = () => {
         try {
             const token = localStorage.getItem('token');
             const response = await axios.patch(
-                `http://localhost:8000/api/tickets/${selectedTicket.id}/actualizar-estado/`,
+                `${process.env.REACT_APP_API_URL}/tickets/${selectedTicket.id}/actualizar-estado/`,
                 { estado: 'C' }, // Cambia 'estado' al campo que usas en tu modelo
                 {
                     headers: {
@@ -132,7 +132,7 @@ const TicketList = () => {
         try {
             const token = localStorage.getItem('token');
             const response = await axios.post(
-                `http://localhost:8000/api/ticket-messages/`, // Asegúrate de que esta URL sea correcta
+                `${process.env.REACT_APP_API_URL}/ticket-messages/`, // Asegúrate de que esta URL sea correcta
                 { 
                     ticket: selectedTicket.id,
                     mensaje: newMessageText 

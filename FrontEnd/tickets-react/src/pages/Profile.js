@@ -16,7 +16,7 @@ const ProfilePage = () => {
             try {
                 const token = localStorage.getItem('token');
                 if (token) {
-                    const response = await axios.get('http://localhost:8000/api/usuarios/', {
+                    const response = await axios.get(`${process.env.REACT_APP_API_URL}/usuarios/`, {
                         headers: {
                             'Authorization': `Token ${token}`,
                         },
@@ -61,7 +61,7 @@ const ProfilePage = () => {
             };
 
             const token = localStorage.getItem('token');
-            await axios.put(`http://localhost:8000/api/usuarios/${userId}/`, updatedData, {
+            await axios.put(`${process.env.REACT_APP_API_URL}/usuarios/${userId}/`, updatedData, {
                 headers: {
                     'Authorization': `Token ${token}`,
                 },
