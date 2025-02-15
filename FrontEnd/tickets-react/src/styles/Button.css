@@ -1,0 +1,24 @@
+.styleType {
+    padding: 10px 15px;
+    font-size: 16px;
+    background-color: #000;
+    color: #7D3C98;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 1000;
+  }
+
+  @media (max-width: 768px) {
+    .styleType {
+      font-size: 14px; /* Ajusta el tamaño de la fuente */
+      padding: 8px 12px; /* Ajusta el tamaño del botón */
+      top: auto;
+      bottom: 20px; /* Mueve el botón hacia abajo */
+      left: 50%;
+      transform: translateX(-50%); /* Centra el botón horizontalmente */
+    }
+  }
