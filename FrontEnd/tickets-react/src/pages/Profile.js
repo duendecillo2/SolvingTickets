@@ -1,14 +1,14 @@
-// ProfilePage.js
 import React, { useState, useEffect } from 'react';
 import ProfilePicture from '../components/ProfilePicture';
 import '../styles/ProfilePage.css';
 import axios from 'axios';
+import BackButton from '../components/BackButton';
 
 const ProfilePage = () => {
     const [userData, setUserData] = useState({});
     const [isEditing, setIsEditing] = useState(false);
     const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState(''); // Estado para el apellido
+    const [lastName, setLastName] = useState('');
     const [userId, setUserId] = useState(null);
 
     useEffect(() => {
@@ -16,15 +16,19 @@ const ProfilePage = () => {
             try {
                 const token = localStorage.getItem('token');
                 if (token) {
-                    const response = await axios.get('http://localhost:8000/api/usuarios/', {
+                    const response = await axios.get(`${process.env.REACT_APP_API_URL}/usuarios/`, {
                         headers: {
                             'Authorization': `Token ${token}`,
                         },
                     });
-                    setUserId(response.data[0].id); // Inicializa correctamente el userId
-                    setUserData(response.data); // Actualiza el estado con los datos del usuario
-                    setFirstName(response.data[0].first_name || ''); // Inicializa firstName
-                    setLastName(response.data[0].last_name || ''); // Inicializa lastName
+
+                    if (response.data.length > 0) {
+                        const user = response.data[0]; // Obtiene el primer usuario
+                        setUserId(user.id);
+                        setUserData(user);
+                        setFirstName(user.first_name || '');
+                        setLastName(user.last_name || '');
+                    }
                 } else {
                     console.warn('No hay un token de autenticación disponible');
                 }
@@ -33,7 +37,7 @@ const ProfilePage = () => {
             }
         };
         fetchUserData();
-    }, []); // Ejecuta la función una vez al montar el componente
+    }, []);
 
     const handleEditClick = () => {
         setIsEditing(!isEditing);
@@ -51,12 +55,13 @@ const ProfilePage = () => {
                 return;
             }
 
-            const updatedData = {};
-            if (firstName.trim()) updatedData.first_name = firstName;
-            if (lastName.trim()) updatedData.last_name = lastName;
+            const updatedData = {
+                first_name: firstName.trim(),
+                last_name: lastName.trim(),
+            };
 
             const token = localStorage.getItem('token');
-            await axios.put(`http://localhost:8000/api/usuarios/${userId}/`, updatedData, {
+            await axios.put(`${process.env.REACT_APP_API_URL}/usuarios/${userId}/`, updatedData, {
                 headers: {
                     'Authorization': `Token ${token}`,
                 },
@@ -64,7 +69,8 @@ const ProfilePage = () => {
 
             setUserData((prev) => ({
                 ...prev,
-                ...updatedData,
+                first_name: firstName,
+                last_name: lastName,
             }));
 
             setIsEditing(false);
@@ -76,27 +82,26 @@ const ProfilePage = () => {
     const formatDate = (date) => {
         if (!date) return '';
         const parsedDate = new Date(date);
-        if (isNaN(parsedDate)) return '';
-        return parsedDate.toISOString().split('T')[0];
+        return isNaN(parsedDate) ? '' : parsedDate.toISOString().split('T')[0];
     };
 
-    if (!userData || !userData[0]) {
+    if (!userData || Object.keys(userData).length === 0) {
         return <div>Loading...</div>;
     }
 
     return (
         <div className="profile-page-container">
             <h2 className="profile-title">Mi Perfil</h2>
+            <BackButton text="Volver" />
             <div className="profile-section">
                 <ProfilePicture />
                 <h3 className="profile-subtitle">Foto de Perfil</h3>
             </div>
-
             <div className="profile-details">
                 <h3 className="profile-subtitle">Información Personal</h3>
                 <div className="profile-field">
                     <label>Usuario:</label>
-                    <span>{userData[0].username}</span>
+                    <span>{userData.username}</span>
                 </div>
                 <div className="profile-field">
                     <label>Nombre:</label>
@@ -107,7 +112,7 @@ const ProfilePage = () => {
                             onChange={(e) => setFirstName(e.target.value)}
                         />
                     ) : (
-                        <span>{userData[0].first_name}</span>
+                        <span>{userData.first_name}</span>
                     )}
                 </div>
                 <div className="profile-field">
@@ -119,16 +124,16 @@ const ProfilePage = () => {
                             onChange={(e) => setLastName(e.target.value)}
                         />
                     ) : (
-                        <span>{userData[0].last_name}</span>
+                        <span>{userData.last_name}</span>
                     )}
                 </div>
                 <div className="profile-field">
                     <label>Email:</label>
-                    <span>{userData[0].email}</span>
+                    <span>{userData.email}</span>
                 </div>
                 <div className="profile-field">
                     <label>Fecha de Registro:</label>
-                    <span>{formatDate(userData[0].date_joined)}</span>
+                    <span>{formatDate(userData.date_joined)}</span>
                 </div>
             </div>
             <button onClick={handleEditClick}>
