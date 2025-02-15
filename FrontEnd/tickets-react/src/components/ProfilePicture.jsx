@@ -8,7 +8,7 @@ const ProfilePicture = () => {
     const fetchProfilePicture = async () => {
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.get('http://localhost:8000/api/profile/', {
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/profile/`, {
                 headers: {
                     'Authorization': `Token ${token}`,
                 },
@@ -39,7 +39,7 @@ const ProfilePicture = () => {
 
         try {
             const token = localStorage.getItem('token');
-            const response = await axios.patch('http://localhost:8000/api/profile/upload-profile-image/', formData, {
+            const response = await axios.patch(`${process.env.REACT_APP_API_URL}/profile/upload-profile-image/`, formData, {
                 headers: {
                     'Authorization': `Token ${token}`,
                     'Content-Type': 'multipart/form-data', // Esto es necesario para enviar archivos
