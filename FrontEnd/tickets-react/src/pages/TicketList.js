@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { toast } from 'react-hot-toast';
 import '../styles/TicketList.css'; // Asegúrate de crear este archivo CSS
 import { Modal, Box, Button, TextField } from '@mui/material';
 import { FaCheck } from "react-icons/fa";
@@ -7,6 +8,7 @@ import { ImCross } from "react-icons/im";
 import { MdNavigateBefore } from "react-icons/md";
 import { IoIosArrowForward } from "react-icons/io";
 import { fetchCategorias }from '../utils/categoria'
+import BackButton from '../components/BackButton';
 
 const TicketList = () => {
     const [tickets, setTickets] = useState([]);
@@ -25,7 +27,7 @@ const TicketList = () => {
         const fetchTickets = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const response = await axios.get('http://localhost:8000/api/tickets/', {
+                const response = await axios.get(`${process.env.REACT_APP_API_URL}/tickets/`, {
                     headers: {
                         'Authorization': `Token ${token}`,
                     },
@@ -53,7 +55,7 @@ const TicketList = () => {
         try {
             const token = localStorage.getItem('token');
             const response = await axios.get(
-                `http://localhost:8000/api/ticket-messages/?ticket=${ticket.id}`,
+                `${process.env.REACT_APP_API_URL}/ticket-messages/?ticket=${ticket.id}`,
             {
                 headers: {
                     Authorization: `Token ${token}`,
@@ -88,7 +90,7 @@ const TicketList = () => {
         try {
             const token = localStorage.getItem('token');
             const response = await axios.patch(
-                `http://localhost:8000/api/tickets/${selectedTicket.id}/actualizar-estado/`,
+                `${process.env.REACT_APP_API_URL}/tickets/${selectedTicket.id}/actualizar-estado/`,
                 { estado: 'C' }, // Cambia 'estado' al campo que usas en tu modelo
                 {
                     headers: {
@@ -111,7 +113,7 @@ const TicketList = () => {
             closeModal(); // Cierra el modal después de la acción
         } catch (err) {
             console.error('Error al finalizar el ticket:', err);
-            alert('No se pudo finalizar el ticket. Inténtalo de nuevo.');
+            toast.error('No se pudo finalizar el ticket. Inténtalo de nuevo.');
         }
     };
     
@@ -130,7 +132,7 @@ const TicketList = () => {
         try {
             const token = localStorage.getItem('token');
             const response = await axios.post(
-                `http://localhost:8000/api/ticket-messages/`, // Asegúrate de que esta URL sea correcta
+                `${process.env.REACT_APP_API_URL}/ticket-messages/`, // Asegúrate de que esta URL sea correcta
                 { 
                     ticket: selectedTicket.id,
                     mensaje: newMessageText 
@@ -148,7 +150,7 @@ const TicketList = () => {
             setNewMessageText(''); // Limpia el texto del mensaje
         } catch (err) {
             console.error('Error al enviar mensaje:', err);
-            alert('No se pudo enviar el mensaje. Inténtalo de nuevo.');
+            toast.error('No se pudo enviar el mensaje. Inténtalo de nuevo.');
         }
     };
 
@@ -166,6 +168,7 @@ const TicketList = () => {
     return (
         <div className="ticket-list">
             <h2>Lista de Tickets</h2>
+            <BackButton text="Volver" />
             <table className="ticket-table">
         <thead>
         <tr>
