@@ -1,8 +1,8 @@
 from django.urls import path, include
-from .views import TicketViewSet, CategoriaViewSet, UserViewSet , login, UserProfileViewSet, ticket_stats, TicketMessageViewSet, DeleteUserView, EditUserView, toggle_ban_user
+from .views import TicketViewSet, CategoriaViewSet, UserViewSet , login, UserProfileViewSet, ticket_stats, TicketMessageViewSet, DeleteUserView, EditUserView, toggle_ban_user, listar_administradores
 from rest_framework.routers import DefaultRouter
 from . import views
-
+from .views import get_calificaciones
 
 router = DefaultRouter()
 router.register(r'tickets', TicketViewSet)
@@ -21,7 +21,8 @@ urlpatterns = [
     path('api/users/<int:user_id>/delete/', DeleteUserView.as_view(), name='delete_user'),
     path('api/users/<int:user_id>/edit/', EditUserView.as_view(), name='edit-user'),
     path('api/users/<int:user_id>/ban/', toggle_ban_user, name='toggle-ban-user'),
-
+    path('api/administradores/', listar_administradores, name='listar_administradores'),
+    path('calificaciones/', get_calificaciones, name="get_calificaciones"),
 ]
 
 

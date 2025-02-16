@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import  UserManagement from '../pages/adminPage/UserManagement.js';
 import Administracion from '../pages/adminPage/Administracion';
 import AdminStats from '../pages/adminPage/Estadisticas';
-
 import '../styles/AdminPage.css';
+
 
 
 const AdminPage = () => {

@@ -21,6 +21,7 @@ from django.db.models import Count
 from rest_framework.views import APIView
 from django.http import JsonResponse
 from django.contrib.auth import authenticate, login
+from django.views.decorators.csrf import csrf_exempt
 
 class TicketViewSet(viewsets.ModelViewSet):
     queryset = Ticket.objects.all()
@@ -274,7 +275,6 @@ class DeleteUserView(APIView):
     permission_classes = [IsAuthenticated]  # Permite solo a usuarios autenticados
 
     def delete(self, request, user_id):
-        print("holaa")
         try:
             user = User.objects.get(id=user_id)
             if request.user.profile.role != 'agent':
@@ -323,3 +323,45 @@ def toggle_ban_user(request, user_id):
         return Response({"message": f"User {user.username} is now {profile.status}"})
     except User.DoesNotExist:
         return Response({"error": "User not found"}, status=404)
+
+
+@api_view(['GET'])
+def listar_administradores(request):
+    administradores = UserProfile.objects.filter(role='agent')
+    data = [
+        {
+            "id": admin.user.id,
+            "username": admin.user.username,
+            "profile_image": admin.profile_image.url if admin.profile_image else None,
+            "bio": admin.bio
+        }
+        for admin in administradores
+    ]
+    return Response(data)
+
+@csrf_exempt
+def get_calificaciones(request):
+    if request.method == "GET":
+        calificaciones = {
+            24: [
+            {"calificacion": 5, "comentario": "Excelente atención."},
+            {"calificacion": 4, "comentario": "Muy eficiente en su trabajo."},
+            {"calificacion": 5, "comentario": "Siempre dispuesto a ayudar."},
+            ],
+            29: [
+            {"calificacion": 4, "comentario": "Responde rápido y es muy amable."},
+            {"calificacion": 3, "comentario": "Buen administrador, pero puede mejorar."},
+            {"calificacion": 4, "comentario": "Atento y profesional."},
+            ],
+            30: [
+            {"calificacion": 5, "comentario": "Excelente en su trabajo."},
+            {"calificacion": 4, "comentario": "Muy atento y servicial."},
+            {"calificacion": 5, "comentario": "Gran profesionalismo."},
+            ],
+            31: [
+            {"calificacion": 4, "comentario": "Muy amable y rápido en responder."},
+            {"calificacion": 3, "comentario": "Puede mejorar en algunos aspectos."},
+            {"calificacion": 5, "comentario": "Eficiente y profesional."},
+            ],
+        }
+        return JsonResponse(calificaciones)
