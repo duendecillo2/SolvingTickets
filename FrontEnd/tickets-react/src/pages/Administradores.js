@@ -6,6 +6,7 @@ import BackButton from '../components/BackButton';
 
 const Administradores = () => {
     const [admins, setAdmins] = useState([]);
+    const [calificaciones, setCalificaciones] = useState({});
     const [selectedAdmin, setSelectedAdmin] = useState(null);
     const [modalIsOpen, setModalIsOpen] = useState(false);
 
@@ -15,10 +16,22 @@ const Administradores = () => {
             .then(data => setAdmins(data))
             .catch(error => console.error("Error al obtener administradores:", error));
     }, []);
-    console.log(admins)
+
+    useEffect(() => {
+        fetch(`${process.env.REACT_APP_URL}/calificaciones/`)
+            .then(response => response.json())
+            .then(data => {
+                console.log("Datos de calificaciones recibidos:", data);
+                setCalificaciones(data);
+            })
+            .catch(error => console.error("Error al obtener calificaciones:", error));
+    }, []);
+
     const openModal = (admin) => {
-        setSelectedAdmin(admin);
-        setModalIsOpen(true);
+        if (!modalIsOpen) {  // Solo abre si el modal no está abierto
+            setSelectedAdmin(admin);
+            setModalIsOpen(true);
+        }
     };
 
     const closeModal = () => {
@@ -75,29 +88,21 @@ const Administradores = () => {
                             />
                         </div>
                         <h2 className="modal-name">{selectedAdmin.username}</h2>
-                        <p className="modal-bio">Biografia: {selectedAdmin.bio}</p>
+                        <p className="modal-bio">Biografía: {selectedAdmin.bio}</p>
 
-                        <div class="modal-reviews">
-                                <p>⭐ Opinión 1: Muy buen administrador...</p>
-                                <p>⭐ Opinión 2: Responde rápido...</p>
-                                <p>⭐ Opinión 3: Excelente atención...</p>
-                                <p>⭐ Opinión 1: Muy buen administrador...</p>
-                                <p>⭐ Opinión 2: Responde rápido...</p>
-                                <p>⭐ Opinión 3: Excelente atención...</p>
-                                <p>⭐ Opinión 1: Muy buen administrador...</p>
-                                <p>⭐ Opinión 2: Responde rápido...</p>
-                                <p>⭐ Opinión 3: Excelente atención...</p>
-                                <p>⭐ Opinión 1: Muy buen administrador...</p>
-                                <p>⭐ Opinión 2: Responde rápido...</p>
-                                <p>⭐ Opinión 3: Excelente atención...</p>
-                                -- Más opiniones aquí --
+                        <div className="modal-reviews">
+                            <h3>Opiniones</h3>
+                            {calificaciones[selectedAdmin.id] ? (
+                                calificaciones[selectedAdmin.id].map((opinion, index) => (
+                                    <p key={index}>⭐ {opinion.calificacion} - {opinion.comentario}</p>
+                                ))
+                            ) : (
+                                <p>No hay opiniones disponibles.</p>
+                            )}
                         </div>
-                        
-                        
                     </div>
                 </Modal>
             )}
-
         </div>
     );
 };
