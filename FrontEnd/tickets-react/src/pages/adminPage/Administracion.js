@@ -131,7 +131,7 @@ const Administracion = () => {
       let fullResponseMessage = responseMessage; // Valor inicial con solo la respuesta
       if (selectedTechnician) {
         // Concatenar el técnico seleccionado
-        fullResponseMessage += ` - Asignado a: ${selectedTechnician}`;
+        fullResponseMessage += `- Asignado a: ${selectedTechnician.nombre + ', email: ' + selectedTechnician.email + ', telefono: ' + selectedTechnician.numtel}`;
       }
       
   
@@ -204,7 +204,6 @@ const handleTechnician = async () => {
 const handleSelectTechnician = (e) => {
   setSelectedTechnician(e.target.value);
   setIsTechnicianModalOpen(false);
-  alert(`Técnico seleccionado: ${e.target.value}`);
 };
 
   const handleAddCategoria = async () => {
@@ -414,7 +413,7 @@ const handleSelectTechnician = (e) => {
               }}
             >
               {technicians.map((tech) => (
-                <MenuItem key={tech.id} value={tech.nombre}>
+                <MenuItem key={tech.id} value={{ nombre: tech.nombre, numtel: tech.numtel, email: tech.email }}>
                   {tech.nombre} - {tech.profesion}
                 </MenuItem>
               ))}
