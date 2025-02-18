@@ -49,6 +49,9 @@ const Administracion = () => {
   const [isTechnicianModalOpen, setIsTechnicianModalOpen] = useState(false);
   const [technicians, setTechnicians] = useState([]);
   const [selectedTechnician, setSelectedTechnician] = useState('');
+  const [isCategoriaModalOpen, setIsCategoriaModalOpen] = useState(false);
+  const [newCategoria, setNewCategoria] = useState('');
+
 
   useEffect(() => {
     const fetchTickets = async () => {
@@ -99,7 +102,7 @@ const Administracion = () => {
       const sortedMessages = response.data.sort(
         (a, b) => new Date(a.created_at) - new Date(b.created_at)
       );
-      
+
       setTicketMessages(sortedMessages);
       setSelectedMessageIndex(sortedMessages.length - 1);
     } catch (error) {
@@ -125,13 +128,12 @@ const Administracion = () => {
         return;
       }
 
-      let fullResponseMessage = responseMessage; // Valor inicial con solo la respuesta
+      let fullResponseMessage = responseMessage;
       if (selectedTechnician) {
-        // Concatenar el técnico seleccionado
-        fullResponseMessage += ` - Asignado a: ${selectedTechnician}`;
+        fullResponseMessage += `- Asignado a: ${selectedTechnician.nombre + ', email: ' + selectedTechnician.email + ', telefono: ' + selectedTechnician.numtel}`;
       }
-      
-  
+
+
 
       await axios.post(
         `${process.env.REACT_APP_API_URL}/ticket-messages/${ticketMessages[selectedMessageIndex].id}/responder/`,
@@ -180,24 +182,51 @@ const Administracion = () => {
     }
   };
 
-  const handleTechnician = async () => {
-    const confirmTechnician = window.confirm('¿Estás seguro de que deseas asignar un técnico a este ticket?');
-    if (!confirmTechnician) return;
-    // Emulación de datos
-    setTechnicians([
-      { id: 1, nombre: 'Técnico Carlos', profesion: 'Redes' },
-      { id: 2, nombre: 'Técnico María', profesion: 'Soporte' },
-    ]);
-    setIsTechnicianModalOpen(true);
+const handleTechnician = async () => {
+  try {
+    const token = localStorage.getItem('token');
+    const tecnicos = await axios.get(`${process.env.REACT_APP_URL}/trabajadores/`, {
+      headers: {
+        Authorization: `Token ${token}`,
+      },
+    });
+    console.log(tecnicos.data); 
+    const techniciansArray = Object.values(tecnicos.data);
+    setTechnicians(techniciansArray);
+  } catch (error) {
+    console.error('Error al obtener los tecnicos disponibles:', error);
+    alert('Hubo un error al obtener los tecnicos.');
+  }
+  setIsTechnicianModalOpen(true);
+};
+
+const handleSelectTechnician = (e) => {
+  setSelectedTechnician(e.target.value);
+  setIsTechnicianModalOpen(false);
+};
+
+  const handleAddCategoria = async () => {
+    console.log("sfsdfd")
+    try {
+      const token = localStorage.getItem('token');
+      await axios.post(
+        `${process.env.REACT_APP_API_URL}/categorias/`, 
+        { nombre: newCategoria },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${token}`,
+          },
+        }
+      );
+      setIsCategoriaModalOpen(false);
+      alert('Categoría agregada correctamente.');
+    } catch (error) {
+      console.error('Error al agregar categoría:', error);
+      alert('Hubo un error al agregar la categoría.');
+    }
   };
 
-  const handleSelectTechnician = (e) => {
-    setSelectedTechnician(e.target.value);
-    setIsTechnicianModalOpen(false);
-    alert(`Técnico seleccionado: ${e.target.value}`);
-  };
-
-  
   const columns = [
     { field: 'id', headerName: 'ID', width: 70 },
     { field: 'asunto', headerName: 'Asunto', width: 200 },
@@ -249,7 +278,24 @@ const Administracion = () => {
   return (
     <ThemeProvider theme={theme}>
       <div style={{ height: 600, width: '100%' }}>
-        <h1>Administración de Tickets</h1>
+        {/* Contenedor para el título y el botón */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+          <h1 style={{ margin: 0 }}>Administración de Tickets</h1>
+          <button
+            onClick={() => setIsCategoriaModalOpen(true)}
+            style={{
+              backgroundColor: '#7D3C98',
+              color: '#fff',
+              border: 'none',
+              padding: '10px 20px',
+              borderRadius: '5px',
+              cursor: 'pointer',
+            }}
+          >
+            Agregar Categoría
+          </button>
+        </div>
+
         <DataGrid
           rows={tickets}
           columns={columns}
@@ -273,7 +319,7 @@ const Administracion = () => {
             borderRadius: '10px',
             boxShadow: 24,
             p: 4,
-            width: '400px',
+            width: '500px',
           }}
         >
           <Button onClick={handlePrevMessage} disabled={selectedMessageIndex === 0}>
@@ -318,22 +364,23 @@ const Administracion = () => {
               color: '#ffffff',
             }}
           />
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleSubmitResponse}
-            sx={{ marginRight: 2 }}
-          >
-            Enviar
-          </Button>
-          <Button variant="outlined" onClick={handleCloseModal} color="secondary">
-            Cancelar
-          </Button>
-          <Button variant="contained" onClick={handleTechnician} sx={{ marginLeft: 7 }}>
-            ...
-          </Button>
+
+          {/* Contenedor de botones alineados */}
+          <div style={{ display: 'flex', marginTop: '10px' }}>
+            <Button variant="contained" color="primary" onClick={handleSubmitResponse} sx={{ flex: 1, marginRight: 1 }}>
+              Enviar
+            </Button>
+            <Button variant="outlined" onClick={handleCloseModal} color="secondary" sx={{ flex: 1, marginRight: 1 }}>
+              Cancelar
+            </Button>
+            <Button variant="contained" onClick={handleTechnician} sx={{ flex: 2 }}>
+              Asignar Técnico
+            </Button>
+          </div>
+
         </Box>
       </Modal>
+
 
       <Modal open={isTechnicianModalOpen} onClose={() => setIsTechnicianModalOpen(false)}>
         <Box
@@ -365,7 +412,7 @@ const Administracion = () => {
               }}
             >
               {technicians.map((tech) => (
-                <MenuItem key={tech.id} value={tech.nombre}>
+                <MenuItem key={tech.id} value={{ nombre: tech.nombre, numtel: tech.numtel, email: tech.email }}>
                   {tech.nombre} - {tech.profesion}
                 </MenuItem>
               ))}
@@ -376,6 +423,48 @@ const Administracion = () => {
           </Button>
         </Box>
       </Modal>
+
+      <Modal open={isCategoriaModalOpen} onClose={() => setIsCategoriaModalOpen(false)}>
+      <Box
+        sx={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          bgcolor: '#1c1c1c',
+          color: '#ffffff',
+          borderRadius: '10px',
+          boxShadow: 24,
+          p: 4,
+          width: '400px',
+        }}
+      >
+        <h2>Agregar Nueva Categoría</h2>
+        <TextField
+          label="Nombre de la Categoría"
+          variant="outlined"
+          fullWidth
+          value={newCategoria}
+          onChange={(e) => setNewCategoria(e.target.value)}
+          sx={{
+            marginBottom: 2,
+            backgroundColor: '#333333',
+            borderRadius: '5px',
+            color: '#ffffff',
+          }}
+        />
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
+          <Button variant="contained" color="primary" onClick={handleAddCategoria} sx={{ marginRight: 2 }}>
+            Agregar
+          </Button>
+          <Button variant="outlined" onClick={() => setIsCategoriaModalOpen(false)} color="secondary">
+            Cancelar
+          </Button>
+        </Box>
+      </Box>
+    </Modal>
+
+
     </ThemeProvider>
   );
 };
