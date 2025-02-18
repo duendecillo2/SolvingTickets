@@ -3,6 +3,7 @@ from .views import TicketViewSet, CategoriaViewSet, UserViewSet , login, UserPro
 from rest_framework.routers import DefaultRouter
 from . import views
 from .views import get_calificaciones
+from .views import get_trabajadores
 
 router = DefaultRouter()
 router.register(r'tickets', TicketViewSet)
