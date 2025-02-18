@@ -3,6 +3,7 @@ from .views import TicketViewSet, CategoriaViewSet, UserViewSet , login, UserPro
 from rest_framework.routers import DefaultRouter
 from . import views
 from .views import get_calificaciones
+from .views import get_trabajadores
 
 router = DefaultRouter()
 router.register(r'tickets', TicketViewSet)
@@ -23,6 +24,7 @@ urlpatterns = [
     path('api/users/<int:user_id>/ban/', toggle_ban_user, name='toggle-ban-user'),
     path('api/administradores/', listar_administradores, name='listar_administradores'),
     path('calificaciones/', get_calificaciones, name="get_calificaciones"),
+    path('trabajadores/', get_trabajadores, name="get_trabajadores"),
 ]
 
 
