@@ -365,3 +365,31 @@ def get_calificaciones(request):
             ],
         }
         return JsonResponse(calificaciones)
+
+@csrf_exempt
+def get_trabajadores(request):
+    if request.method == "GET":
+        trabajadores = {
+            1: {
+                "nombre": "Juan",
+                "apellido": "Pérez",
+                "email": "juanPerez98@yahoo.com",
+                "numtel": "123456789",
+                "profesion": "Carpintero",
+            },
+            2: {
+                "nombre": "María",
+                "apellido": "López",
+                "email": "mariaLopez_92@gmail.com",
+                "numtel": "987654321",
+                "profesion": "Electricista",
+            },
+            3: {
+                "nombre": "Carlos",
+                "apellido": "Gómez",
+                "email": "carlosfontanero@oficio.com",
+                "numtel": "456789123",
+                "profesion": "Fontanero",
+            },
+        }
+        return JsonResponse(trabajadores)
