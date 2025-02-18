@@ -1,0 +1,89 @@
+/* Estilos para el formulario de creación de ticket */
+.container {
+    background-color: #000000; /* Fondo negro */
+    border-radius: 10px;
+    padding: 30px; /* Aumentado el padding */
+    width: 100%;
+    max-width: 600px; /* Máximo ancho de 600px */
+    margin: 30px auto; /* Margen superior y centrado en la página */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box; /* Asegura que el padding no afecte el ancho total */
+}
+
+.h2 {
+    color: #7D3C98; /* Morado oscuro para el título */
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px; /* Tamaño de fuente ajustado */
+}
+
+.inputGroup {
+    margin-bottom: 20px; /* Espaciado inferior más amplio */
+    position: relative;
+}
+
+.inputGroup input,
+.inputGroup textarea,
+.inputGroup select {
+    width: 100%;
+    padding: 15px; /* Aumentado el padding */
+    border: 2px solid #7D3C98; /* Línea delgada en color morado */
+    border-radius: 5px;
+    background-color: #000000; /* Fondo negro */
+    color: #FFFFFF; /* Texto blanco */
+    outline: none; /* Quita el borde por defecto de la caja de texto */
+    font-size: 16px; /* Tamaño de fuente más grande */
+    box-sizing: border-box; /* Asegura que el padding no afecte el ancho total */
+}
+
+.inputGroup label {
+    position: absolute;
+    top: -15px; /* Ajustado hacia arriba */
+    left: 15px;
+    background-color: #000000;
+    color: #7D3C98; /* Morado oscuro */
+    padding: 0 5px;
+    font-size: 14px; /* Tamaño de fuente más grande */
+}
+
+/* Botón */
+.button {
+    width: 100%;
+    background-color: #7D3C98; /* Morado oscuro */
+    color: #FFFFFF; /* Texto blanco */
+    border: none;
+    padding: 15px; /* Aumentado el padding */
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px; /* Tamaño de fuente más grande */
+    transition: background-color 0.3s ease;
+    box-sizing: border-box;
+}
+
+.button:hover {
+    background-color: #6A2D80; /* Morado más oscuro en hover */
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+    .container {
+        margin: 20px; /* Reduce el margen en pantallas más pequeñas */
+        padding: 20px; /* Reduce el padding */
+    }
+
+    .h2 {
+        font-size: 20px; /* Ajusta el tamaño de fuente del título */
+    }
+
+    .inputGroup input,
+    .inputGroup textarea,
+    .inputGroup select {
+        font-size: 14px; /* Reduce el tamaño de la fuente en inputs y selects */
+        padding: 12px; /* Reduce el padding en inputs y selects */
+    }
+
+    .button {
+        font-size: 16px; /* Ajusta el tamaño del texto del botón */
+        padding: 12px; /* Reduce el padding del botón */
+    }
+}

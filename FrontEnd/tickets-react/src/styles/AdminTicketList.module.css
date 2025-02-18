@@ -1,0 +1,14 @@
+.MuiDataGrid-columnHeaders {
+    background-color: #333333;
+    color: #ffffff;
+  }
+  
+  .MuiDataGrid-cell {
+    color: #f4f4f4;
+  }
+  
+  .MuiDataGrid-root {
+    background-color: #1c1c1c;
+    border: none;
+  }
+  

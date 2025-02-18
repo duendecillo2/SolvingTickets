@@ -1,0 +1,170 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background-image: url('../media/fondo.jpeg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    color: white;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    position: relative;
+    padding-top: 100px;
+}
+
+.floating-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+.middle-logo {
+    width: 10vw;
+    height: auto;
+    margin-right: 20px;
+}
+
+.about-us {
+    max-width: 600px;
+    color: #fff;
+}
+
+.about-us h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.about-us p {
+    font-size: 16px;
+}
+
+.vision-mission-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.vision, .mission {
+    max-width: 600px;
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: rgba(125, 60, 152, 0.5);
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    color: #fff;
+}
+
+.vision h2, .mission h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: white;
+    display: flex;
+    align-items: center;
+}
+
+.vision h2 svg, .mission h2 svg {
+    margin-right: 10px;
+    font-size: 32px;
+}
+
+.vision p, .mission p {
+    font-size: 16px;
+    line-height: 1.5;
+    text-align: justify;
+}
+
+.faq-container {
+    margin-top: 50px;
+    padding: 20px;
+    max-width: 800px;
+    background-color: rgba(125, 60, 152, 0.5);
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    color: white;
+}
+
+.faq-container h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.faq-item {
+    margin-bottom: 20px;
+}
+
+.faq-item h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: white;
+    transition: color 0.3s ease;
+}
+
+.faq-item h3:hover {
+    color: #ffcc00;
+}
+
+.faq-item p {
+    font-size: 16px;
+    line-height: 1.5;
+    color: white;
+    text-align: justify;
+}
+
+/* 🎯 RESPONSIVE DESIGN */
+@media (max-width: 768px) {
+    .container {
+        padding-top: 50px;
+    }
+
+    .floating-container {
+        flex-direction: column;
+        text-align: center;
+        padding: 15px;
+        width: 90%;
+    }
+
+    .middle-logo {
+        width: 50vw; /* Más grande en móviles */
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+
+    .about-us {
+        max-width: 90%;
+    }
+
+    .vision-mission-container {
+        width: 90%;
+    }
+
+    .vision, .mission {
+        max-width: 100%;
+        text-align: center;
+        padding: 15px;
+    }
+
+    .faq-container {
+        max-width: 90%;
+        padding: 15px;
+    }
+
+    .faq-item h3 {
+        font-size: 18px;
+    }
+}

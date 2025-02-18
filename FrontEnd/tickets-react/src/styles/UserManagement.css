@@ -1,0 +1,151 @@
+.user-management {
+  padding: 20px;
+}
+
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.user-table th, .user-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.user-table th {
+  background-color: #800080; /* Color morado */
+  color: white;
+  text-align: left;
+}
+
+.btn {
+  padding: 5px 10px;
+  margin: 0 5px;
+  cursor: pointer;
+}
+
+.btn-edit {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.btn-delete {
+  background-color: #800080; /* Color morado */
+  color: white;
+}
+
+.btn-toggle {
+  background-color: #008CBA;
+  color: white;
+}
+
+/* Modal */
+.edit-user-modal {
+  background: rgb(0, 0, 0);
+  padding: 2rem;
+  border-radius: 8px;
+  width: 400px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+}
+
+.edit-user-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+/* Contenido del modal */
+.edit-user-modal h2 {
+  margin-bottom: 1.5rem;
+  color: #2c3e50; /* Color principal */
+}
+
+.edit-user-modal select {
+  width: 100%;
+  padding: 0.8rem;
+  margin: 0.5rem 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.edit-user-modal button {
+  padding: 0.8rem 1.5rem;
+  margin: 1rem 0.5rem 0 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.edit-user-modal button:first-child {
+  background-color: #3498db; /* Color de botón principal */
+  color: white;
+}
+
+.edit-user-modal button:last-child {
+  background-color: #e74c3c; /* Color de botón de cancelación */
+  color: white;
+}
+
+.edit-user-modal button:hover {
+  opacity: 0.8;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  color: white;
+}
+
+.btn-success {
+  background-color: #28a745;
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+}
+
+.btn-success:hover {
+  background-color: #218838;
+}
+
+/* Estilo para usuarios baneados */
+tr.banned {
+  background-color: #ffebee;
+  opacity: 0.8;
+}
+
+/* Estilo base del botón */
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Estilo para el botón de "Ban User" (rojo) */
+.btn-ban {
+  background-color: red;
+  color: white;
+}
+
+/* Estilo para el botón de "Unban User" (celeste) */
+.btn-unban {
+  background-color: lightblue;
+  color: white;
+}
+
+/* Efecto hover */
+.btn:hover {
+  opacity: 0.8;
+}
