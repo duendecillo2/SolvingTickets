@@ -393,31 +393,3 @@ def get_trabajadores(request):
             },
         }
         return JsonResponse(trabajadores)
-
-class TicketInteraccion(viewsets.ModelViewSet):
-    queryset = Ticket.objects.all()
-    serializer_class = TicketSerializer
-
-    def perform_create(self, serializer):
-        dni_usuario = self.request.data.get('dni')
-        usuario = User.objects.filter(profiledni=dni_usuario).first()
-
-        if not usuario:
-            raise NotFound('Usuario no encontrado.')
-
-        # Asignar el usuario encontrado al ticket
-        serializer.validated_data['usuario'] = usuario
-
-        # Buscar el agente con menos tickets asignados
-        agente_asignado = User.objects.filter(profilerole='agent') \
-                                    .annotate(num_tickets=Count('tickets_asignados')) \
-                                    .order_by('num_tickets') \
-                                    .first()
-
-        # Si hay agentes disponibles, asignar el que tenga menos tickets
-        if agente_asignado:
-            serializer.validated_data['agente'] = agente_asignado
-
-        ticket = serializer.save()
-
-        TicketMessage.objects.create(mensaje='mensaje', ticket=ticket)
