@@ -200,32 +200,6 @@ const handleTechnician = async () => {
   setIsTechnicianModalOpen(true);
 };
 
-const handleSelectTechnician = (e) => {
-  setSelectedTechnician(e.target.value);
-  setIsTechnicianModalOpen(false);
-};
-
-  const handleAddCategoria = async () => {
-    console.log("sfsdfd")
-    try {
-      const token = localStorage.getItem('token');
-      await axios.post(
-        `${process.env.REACT_APP_API_URL}/categorias/`, 
-        { nombre: newCategoria },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Token ${token}`,
-          },
-        }
-      );
-      setIsCategoriaModalOpen(false);
-      alert('Categoría agregada correctamente.');
-    } catch (error) {
-      console.error('Error al agregar categoría:', error);
-      alert('Hubo un error al agregar la categoría.');
-    }
-  };
 
 const handleSelectTechnician = (e) => {
   setSelectedTechnician(e.target.value);
