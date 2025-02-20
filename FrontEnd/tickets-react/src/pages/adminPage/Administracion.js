@@ -130,10 +130,6 @@ const Administracion = () => {
 
       let fullResponseMessage = responseMessage;
       if (selectedTechnician) {
-<<<<<<< HEAD
-        // Concatenar el técnico seleccionado
-=======
->>>>>>> 9e735209467ee9907aa23a3ca6cf3c5a842085e5
         fullResponseMessage += `- Asignado a: ${selectedTechnician.nombre + ', email: ' + selectedTechnician.email + ', telefono: ' + selectedTechnician.numtel}`;
       }
 
@@ -203,36 +199,6 @@ const handleTechnician = async () => {
   }
   setIsTechnicianModalOpen(true);
 };
-<<<<<<< HEAD
-
-const handleSelectTechnician = (e) => {
-  setSelectedTechnician(e.target.value);
-  setIsTechnicianModalOpen(false);
-};
-
-  const handleAddCategoria = async () => {
-    console.log("sfsdfd")
-    try {
-      const token = localStorage.getItem('token');
-      await axios.post(
-        `${process.env.REACT_APP_API_URL}/categorias/`, 
-        { nombre: newCategoria },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Token ${token}`,
-          },
-        }
-      );
-      setIsCategoriaModalOpen(false);
-      alert('Categoría agregada correctamente.');
-    } catch (error) {
-      console.error('Error al agregar categoría:', error);
-      alert('Hubo un error al agregar la categoría.');
-    }
-  };
-  
-=======
 
 const handleSelectTechnician = (e) => {
   setSelectedTechnician(e.target.value);
@@ -261,7 +227,32 @@ const handleSelectTechnician = (e) => {
     }
   };
 
->>>>>>> 9e735209467ee9907aa23a3ca6cf3c5a842085e5
+const handleSelectTechnician = (e) => {
+  setSelectedTechnician(e.target.value);
+  setIsTechnicianModalOpen(false);
+};
+
+  const handleAddCategoria = async () => {
+    console.log("sfsdfd")
+    try {
+      const token = localStorage.getItem('token');
+      await axios.post(
+        `${process.env.REACT_APP_API_URL}/categorias/`, 
+        { nombre: newCategoria },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${token}`,
+          },
+        }
+      );
+      setIsCategoriaModalOpen(false);
+      alert('Categoría agregada correctamente.');
+    } catch (error) {
+      console.error('Error al agregar categoría:', error);
+      alert('Hubo un error al agregar la categoría.');
+    }
+  };
   const columns = [
     { field: 'id', headerName: 'ID', width: 70 },
     { field: 'asunto', headerName: 'Asunto', width: 200 },
@@ -330,11 +321,6 @@ const handleSelectTechnician = (e) => {
             Agregar Categoría
           </button>
         </div>
-<<<<<<< HEAD
-        
-=======
-
->>>>>>> 9e735209467ee9907aa23a3ca6cf3c5a842085e5
         <DataGrid
           rows={tickets}
           columns={columns}
@@ -403,11 +389,6 @@ const handleSelectTechnician = (e) => {
               color: '#ffffff',
             }}
           />
-<<<<<<< HEAD
-          
-=======
-
->>>>>>> 9e735209467ee9907aa23a3ca6cf3c5a842085e5
           {/* Contenedor de botones alineados */}
           <div style={{ display: 'flex', marginTop: '10px' }}>
             <Button variant="contained" color="primary" onClick={handleSubmitResponse} sx={{ flex: 1, marginRight: 1 }}>
